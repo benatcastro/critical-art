@@ -1,0 +1,60 @@
+.navbar-items {
+  background: #333;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  z-index: 20;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+  filter: invert(1);
+}
+
+.nav-menu {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 10px;
+  list-style-type: none;
+  text-align: center;
+  width: 70vw;
+  justify-content: end;
+  margin-right: 2rem;
+  transition: all 1s ease;
+}
+
+.nav-links {
+  color: white;
+  text-decoration: none;
+}
+
+.drawer-btn {
+	display: none;
+}
+
+@media screen and (max-width: 960px) {
+	.nav-links {
+		opacity: 0;
+		transition: all 0.5s ease;
+	}
+	.login-btn {
+		opacity: 0;
+		transition: all 0.5s ease;
+	}
+	.drawer {
+		width: 300px;
+	}
+	.drawer-btn {
+		display: flex;
+		align-items: right;
+	}
+	.drawer-list {
+		text-decoration: none;
+	}
+	.close-drawer {
+		display: flex;
+	}
+}
