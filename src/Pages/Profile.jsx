@@ -1,21 +1,23 @@
 import "@aws-amplify/ui-react/styles.css";
-import {
-  withAuthenticator,
-  Button,
-  Heading,
-  Image,
-  View,
-  Card,
-} from "@aws-amplify/ui-react";
+import { withAuthenticator, Button } from "@aws-amplify/ui-react";
+import { API } from "aws-amplify";
+import { listImages } from "../graphql/queries";
+import { IsAuth } from "../Components/UserAuth/IsAuth";
+
+const fetchUsers = async () => {
+  const apiData = await API.graphql({ query: listImages });
+  console.log("apiData", apiData);
+};
 
 function App({ signOut }) {
+	IsAuth();
+	fetchUsers();
   return (
-    <View className="App">
-      <Card>
-        <Heading level={1}>We now have Auth!</Heading>
-      </Card>
+    <div>
+      <div className="h-40"></div>
+
       <Button onClick={signOut}>Sign Out</Button>
-    </View>
+    </div>
   );
 }
 

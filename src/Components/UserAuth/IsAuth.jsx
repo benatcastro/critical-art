@@ -1,7 +1,7 @@
 import { Auth, Hub } from "aws-amplify";
 import { useState, useEffect } from "react";
 
-export function AuthenticatedStatus() {
+export function IsAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   async function ionViewCanEnter() {
