@@ -6,7 +6,7 @@ import { Layout } from "./Layout";
 import { NotFound } from "../Pages/NotFound";
 import { Artists } from "../Pages/Artists";
 import { Contact } from "../Pages/Contact";
-import  Profile from "../Pages/Profile";
+import { Profile } from "../Pages/Profile";
 
 export const router = createBrowserRouter([
   {

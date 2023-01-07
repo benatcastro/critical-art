@@ -169,19 +169,11 @@ export const getAccount = /* GraphQL */ `
 `;
 export const listAccounts = /* GraphQL */ `
   query ListAccounts(
-    $id: ID
     $filter: ModelAccountFilterInput
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
-    listAccounts(
-      id: $id
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
+    listAccounts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         email
@@ -254,46 +246,6 @@ export const listImages = /* GraphQL */ `
     $nextToken: String
   ) {
     listImages(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        Src
-        author {
-          id
-          email
-          username
-          firstName
-          lastName
-          verified
-          artistAcc
-          createdAt
-          updatedAt
-          accountFavImgId
-        }
-        ShortDesc
-        Description
-        createdAt
-        updatedAt
-        accountImagesId
-      }
-      nextToken
-    }
-  }
-`;
-export const imagesById = /* GraphQL */ `
-  query ImagesById(
-    $id: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelimageFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    imagesById(
-      id: $id
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
       items {
         id
         Src

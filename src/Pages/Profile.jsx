@@ -1,24 +1,21 @@
 import "@aws-amplify/ui-react/styles.css";
-import { withAuthenticator, Button } from "@aws-amplify/ui-react";
-import { API } from "aws-amplify";
-import { listImages } from "../graphql/queries";
-import { IsAuth } from "../Components/UserAuth/IsAuth";
+import { Typography } from "@mui/material";
+import {
+  GetCurrentUserEmail,
+  GetUserByEmail,
+} from "../Components/UserAuth/FetchUserInfo";
+import {IsAuth } from "../Components/UserAuth/IsAuth"
 
-const fetchUsers = async () => {
-  const apiData = await API.graphql({ query: listImages });
-  console.log("apiData", apiData);
-};
-
-function App({ signOut }) {
-	IsAuth();
-	fetchUsers();
+export const Profile = () => {
+  IsAuth();
+  GetCurrentUserEmail();
   return (
     <div>
-      <div className="h-40"></div>
-
-      <Button onClick={signOut}>Sign Out</Button>
+      <Typography variant="h6">Profile</Typography>
+      <Typography variant="h6">Profile</Typography>
+      <Typography variant="h6">Profile</Typography>
+      <Typography variant="h6">Profile</Typography>
+      <Typography variant="h6">Profile</Typography>
     </div>
   );
-}
-
-export default withAuthenticator(App);
+};

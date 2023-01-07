@@ -4,9 +4,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 import { SignUpForm } from "../UserAuth/SignUp";
 import { SignInForm } from "../UserAuth/SignIn";
+import { ValidationForm } from "../UserAuth/Validation";
 
 export const LoginPopup = (props) => {
-  const [menu, setMenu] = useState("signup-menu");
+  const [menu, setMenu] = useState("login-menu");
   return (
     <div className="main-container">
       <div className="form-container">
@@ -17,6 +18,8 @@ export const LoginPopup = (props) => {
           <SignUpForm setMenu={setMenu} />
         ) : menu === "login-menu" ? (
           <SignInForm setMenu={setMenu} />
+        ) : menu === "validation-menu" ? (
+			<ValidationForm />
         ) : null}
       </div>
     </div>
