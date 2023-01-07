@@ -1,0 +1,81 @@
+.settings-container {
+  height: 100vh;
+  width: 8rem;
+  padding-top: 25vh;
+}
+
+.account-icon {
+  position: absolute;
+  left: 1.5rem;
+  top: 100%;
+  transition: all 0.3s ease;
+}
+
+.image-icon {
+  position: absolute;
+  left: 1.5rem;
+  top: 100%;
+  transition: all 0.3s ease;
+}
+
+.upload-icon {
+  position: absolute;
+  left: 1.5rem;
+  top: 100%;
+  transition: all 0.3s ease;
+}
+
+.account-settings {
+  height: 8rem;
+  width: 8rem;
+  background-color: black;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    .account-icon {
+      left: 3rem;
+      transition: all 0.3s ease;
+    }
+    width: 9rem;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: all 0.3s ease;
+  }
+}
+.image-settings {
+  margin-top: 1rem;
+  height: 8rem;
+  width: 8rem;
+  background-color: black;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    .image-icon {
+      left: 3rem;
+      transition: all 0.3s ease;
+    }
+    width: 9rem;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: all 0.3s ease;
+  }
+}
+
+.upload-images {
+  margin-top: 1rem;
+  height: 8rem;
+  width: 8rem;
+  background-color: black;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    .upload-icon {
+      left: 3rem;
+      transition: all 0.3s ease;
+    }
+    width: 9rem;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: all 0.3s ease;
+  }
+}

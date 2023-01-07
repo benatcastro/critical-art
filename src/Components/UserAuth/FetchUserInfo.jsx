@@ -19,7 +19,7 @@ export const GetCurrentUserEmail = async () => {
   try {
     const user = await Auth.currentAuthenticatedUser();
     const { attributes } = user;
-    GetUserByEmail(attributes.email);
+    return (GetUserByEmail(attributes.email));
   } catch (error) {
     console.log("Error getting current user:", error);
   }

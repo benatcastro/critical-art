@@ -1,21 +1,14 @@
 import "@aws-amplify/ui-react/styles.css";
 import { Typography } from "@mui/material";
-import {
-  GetCurrentUserEmail,
-  GetUserByEmail,
-} from "../Components/UserAuth/FetchUserInfo";
-import {IsAuth } from "../Components/UserAuth/IsAuth"
+import { Link } from "react-router-dom";
+import { ProfileSidebar } from "../Components/ProfileMenu/ProfileSidebar";
+import { IsAuth } from "../Components/UserAuth/IsAuth";
 
-export const Profile = () => {
-  IsAuth();
-  GetCurrentUserEmail();
+export const Profile = () => {;
   return (
-    <div>
-      <Typography variant="h6">Profile</Typography>
-      <Typography variant="h6">Profile</Typography>
-      <Typography variant="h6">Profile</Typography>
-      <Typography variant="h6">Profile</Typography>
-      <Typography variant="h6">Profile</Typography>
-    </div>
+    <>
+      {IsAuth() ? null : <p>You need to be logged</p>}
+      <ProfileSidebar />
+    </>
   );
 };
