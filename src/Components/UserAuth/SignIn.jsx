@@ -18,9 +18,11 @@ async function signIn(data) {
 
 export const SignInForm = (props) => {
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
     email: Yup.string().required("Email is required").email("Email is invalid"),
-    password: Yup.string().required("Password is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters")
+      .max(40, "Password must not exceed 40 characters"),
   });
   const {
     register,
@@ -31,14 +33,12 @@ export const SignInForm = (props) => {
     resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data) => {
-    signIn(data, props.setMenu);
-  };
+	console.log(data)
+	signIn(data)
+};
   return (
-    <div className="signin-form-container">
-      <div className="signin-textfields">
-        <div className="text-center">
-          <Typography>Login with your Email and Password</Typography>
-        </div>
+    <div className="signup-form-container">
+      <div className="signup-textfields">
         <TextField
           required
           id="email"
@@ -63,14 +63,14 @@ export const SignInForm = (props) => {
       </div>
       <div className="signin-btn">
         <Button onClick={() => props.setMenu("signup-menu")}>
-          <b>Create Account</b>
+          <b>Create account</b>
         </Button>
         <Button
           variant="contained"
           color="secondary"
           onClick={handleSubmit(onSubmit)}
         >
-          Login
+          login
         </Button>
       </div>
     </div>
