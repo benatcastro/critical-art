@@ -16,8 +16,11 @@ export const GetUserByEmail = async (email) => {
 };
 
 export const GetCurrentUserEmail = async () => {
-  const user = await Auth.currentAuthenticatedUser();
-
-  const { attributes } = user;
-  console.log("User:", user);
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+    const { attributes } = user;
+    GetUserByEmail(attributes.email);
+  } catch (error) {
+    console.log("Error getting current user:", error);
+  }
 };

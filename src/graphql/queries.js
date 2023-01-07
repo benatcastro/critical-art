@@ -21,6 +21,7 @@ export const searchAccounts = /* GraphQL */ `
       items {
         id
         email
+        cognitoUser
         username
         firstName
         lastName
@@ -84,6 +85,7 @@ export const searchImages = /* GraphQL */ `
         author {
           id
           email
+          cognitoUser
           username
           firstName
           lastName
@@ -123,6 +125,7 @@ export const getAccount = /* GraphQL */ `
     getAccount(id: $id) {
       id
       email
+      cognitoUser
       username
       firstName
       lastName
@@ -134,6 +137,7 @@ export const getAccount = /* GraphQL */ `
         author {
           id
           email
+          cognitoUser
           username
           firstName
           lastName
@@ -177,6 +181,7 @@ export const listAccounts = /* GraphQL */ `
       items {
         id
         email
+        cognitoUser
         username
         firstName
         lastName
@@ -210,6 +215,7 @@ export const getImage = /* GraphQL */ `
       author {
         id
         email
+        cognitoUser
         username
         firstName
         lastName
@@ -252,6 +258,7 @@ export const listImages = /* GraphQL */ `
         author {
           id
           email
+          cognitoUser
           username
           firstName
           lastName

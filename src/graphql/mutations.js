@@ -9,6 +9,7 @@ export const createAccount = /* GraphQL */ `
     createAccount(input: $input, condition: $condition) {
       id
       email
+      cognitoUser
       username
       firstName
       lastName
@@ -20,6 +21,7 @@ export const createAccount = /* GraphQL */ `
         author {
           id
           email
+          cognitoUser
           username
           firstName
           lastName
@@ -61,6 +63,7 @@ export const updateAccount = /* GraphQL */ `
     updateAccount(input: $input, condition: $condition) {
       id
       email
+      cognitoUser
       username
       firstName
       lastName
@@ -72,6 +75,7 @@ export const updateAccount = /* GraphQL */ `
         author {
           id
           email
+          cognitoUser
           username
           firstName
           lastName
@@ -113,6 +117,7 @@ export const deleteAccount = /* GraphQL */ `
     deleteAccount(input: $input, condition: $condition) {
       id
       email
+      cognitoUser
       username
       firstName
       lastName
@@ -124,6 +129,7 @@ export const deleteAccount = /* GraphQL */ `
         author {
           id
           email
+          cognitoUser
           username
           firstName
           lastName
@@ -168,6 +174,7 @@ export const createImage = /* GraphQL */ `
       author {
         id
         email
+        cognitoUser
         username
         firstName
         lastName
@@ -208,6 +215,7 @@ export const updateImage = /* GraphQL */ `
       author {
         id
         email
+        cognitoUser
         username
         firstName
         lastName
@@ -248,6 +256,7 @@ export const deleteImage = /* GraphQL */ `
       author {
         id
         email
+        cognitoUser
         username
         firstName
         lastName

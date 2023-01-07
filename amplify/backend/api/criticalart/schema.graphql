@@ -10,6 +10,7 @@ type Account
   ) {
   id: ID!
   email: String!
+  cognitoUser: String
   username: String
   firstName: String
   lastName: String

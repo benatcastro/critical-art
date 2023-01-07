@@ -6,7 +6,7 @@ import { TextField, Button, Typography } from "@mui/material";
 import "./SignUpForm.scss";
 import { createUser } from "./CreateUser";
 
-const signUp = async (data, setMenu) => {
+const signUp = async (data, setMenu, setEmail) => {
   let username = data.email;
   let password = data.password;
   try {
@@ -19,7 +19,8 @@ const signUp = async (data, setMenu) => {
       },
     });
     console.log("User signed up correctly:", user);
-    createUser(data);
+    createUser(data, user.keyPrefix.toString());
+	setEmail(data.email)
 	setMenu("validation-menu")
   } catch (error) {
     console.log("error signing up:", error);
@@ -53,7 +54,7 @@ export const SignUpForm = (props) => {
     resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data) => {
-    signUp(data, props.setMenu);
+    signUp(data, props.setMenu, props.setEmail);
   };
   return (
     <div className="signup-form-container">
@@ -126,7 +127,7 @@ export const SignUpForm = (props) => {
           }
         />
       </div>
-      <Button className="validate-btn">Validate</Button>
+      <Button className="validate-btn" onClick={() => props.setMenu("validation-menu")}>Validate</Button>
       <div className="signup-btn">
         <Button onClick={() => props.setMenu("login-menu")}>
           <b>Back to login</b>

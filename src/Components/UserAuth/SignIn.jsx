@@ -33,7 +33,6 @@ export const SignInForm = (props) => {
     resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data) => {
-	console.log(data)
 	signIn(data)
 };
   return (
