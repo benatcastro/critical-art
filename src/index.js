@@ -22,12 +22,15 @@ const mainTheme = createTheme({
   palette: {
     type: "light",
     primary: {
-      main: "#212121",
-      light: "#adafa6",
+      main: "#424242",
+      light: "#6d6d6d",
+	  dark: "#1b1b1b",
       contrastText: "#c9d8c7",
     },
     secondary: {
-      main: "#0288d1",
+      main: "#2196f3",
+	  light: "#6ec6ff",
+	  dark: "#0069c0",
       contrastText: "#4e4546",
     },
 	basics: {
