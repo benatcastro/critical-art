@@ -55,8 +55,11 @@ export const AccountSettings = () => {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
+  const handleRead = () => {
+    setWrite(!readOnly);
+  };
   const waitForData = setTimeout(() => 250);
-  console.log(readOnly);
+  console.log("Read", readOnly);
   return (
     console.log("Return value:", userData),
     (
@@ -67,8 +70,8 @@ export const AccountSettings = () => {
               ? waitForData && <CircularProgress className="loading-data" />
               : userData.map((items, idx) => {
                   return (
-                    <div className="update-data" key={idx}>
-                      <div className="fullname">
+                    <div className="update-data" key={0}>
+                      <div className="fullname" key={1}>
                         <TextField
                           label="First Name"
                           key={idx}
@@ -82,13 +85,13 @@ export const AccountSettings = () => {
                             errors.firstname ? errors.firstname.message : null
                           }
                           inputProps={{
-                            readOnly: { readOnly },
+                            readOnly: readOnly ? true : false,
                           }}
                         />
                         <TextField
+                          key={2}
                           sx={{ ml: "20px" }}
                           label="Last Name"
-                          key={idx}
                           id="lastname"
                           name="lastname"
                           margin="normal"
@@ -99,14 +102,14 @@ export const AccountSettings = () => {
                             errors.lastname ? errors.lastname.message : null
                           }
                           inputProps={{
-                            readOnly: { readOnly },
+                            readOnly: readOnly ? true : false,
                           }}
                         />
                       </div>
                       <div className="user-email">
                         <TextField
+                          key={3}
                           label="Username"
-                          key={idx}
                           variant="outlined"
                           id="username"
                           name="username"
@@ -118,12 +121,12 @@ export const AccountSettings = () => {
                             errors.username ? errors.username.message : null
                           }
                           inputProps={{
-                            readOnly: { readOnly },
+                            readOnly: readOnly ? true : false,
                           }}
                         />
                         <TextField
+                          key={4}
                           sx={{ ml: "20px" }}
-                          key={idx}
                           label="Email"
                           id="email"
                           name="email"
@@ -135,11 +138,12 @@ export const AccountSettings = () => {
                             errors.email ? errors.email.message : null
                           }
                           inputProps={{
-                            readOnly: { readOnly },
+                            readOnly: readOnly ? true : false,
                           }}
                         />
                       </div>
                       <TextField
+                        key={5}
                         label="Biography"
                         multiline
                         rows={4}
@@ -152,15 +156,21 @@ export const AccountSettings = () => {
                         error={errors.bio ? true : false}
                         helperText={errors.bio ? errors.bio.message : null}
                         inputProps={{
-                          readOnly: { readOnly },
+                          readOnly: readOnly ? true : false,
                         }}
                       />
                     </div>
                   );
                 })}
             <div className="update-btn">
-              <Button variant="contained" color="secondary" onClick={() => setWrite(false)}>
-                <Typography color="basics.white">{readOnly ? 'Edit' : 'Save'}</Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleRead}
+              >
+                <Typography color="basics.white">
+                  {readOnly ? "Edit" : "Save"}
+                </Typography>
               </Button>
             </div>
           </div>
