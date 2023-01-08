@@ -21,7 +21,6 @@
     "react-hook-form": "^7.41.5",
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
-    "react-scroll": "^1.8.9",
     "sass": "^1.57.1",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"

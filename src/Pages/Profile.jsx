@@ -4,7 +4,6 @@ import { ProfileSidebar } from "../Components/ProfileMenu/ProfileSidebar";
 import { UploadImage } from "../Components/ProfileMenu/UploadImage";
 import { IsAuth } from "../Components/UserAuth/IsAuth";
 import { useState, useRef, useEffect } from "react";
-import { ScrollElement } from "react-scroll";
 export const Profile = () => {
   const accountSettingsPage = useRef(null);
   const imgSettingsPage = useRef(null);
