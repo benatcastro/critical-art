@@ -15,6 +15,8 @@ export const createAccount = /* GraphQL */ `
       lastName
       verified
       artistAcc
+      avatar
+      biography
       favImg {
         id
         Src
@@ -27,6 +29,8 @@ export const createAccount = /* GraphQL */ `
           lastName
           verified
           artistAcc
+          avatar
+          biography
           createdAt
           updatedAt
           accountFavImgId
@@ -69,6 +73,8 @@ export const updateAccount = /* GraphQL */ `
       lastName
       verified
       artistAcc
+      avatar
+      biography
       favImg {
         id
         Src
@@ -81,6 +87,8 @@ export const updateAccount = /* GraphQL */ `
           lastName
           verified
           artistAcc
+          avatar
+          biography
           createdAt
           updatedAt
           accountFavImgId
@@ -123,6 +131,8 @@ export const deleteAccount = /* GraphQL */ `
       lastName
       verified
       artistAcc
+      avatar
+      biography
       favImg {
         id
         Src
@@ -135,6 +145,8 @@ export const deleteAccount = /* GraphQL */ `
           lastName
           verified
           artistAcc
+          avatar
+          biography
           createdAt
           updatedAt
           accountFavImgId
@@ -180,6 +192,8 @@ export const createImage = /* GraphQL */ `
         lastName
         verified
         artistAcc
+        avatar
+        biography
         favImg {
           id
           Src
@@ -221,6 +235,8 @@ export const updateImage = /* GraphQL */ `
         lastName
         verified
         artistAcc
+        avatar
+        biography
         favImg {
           id
           Src
@@ -262,6 +278,8 @@ export const deleteImage = /* GraphQL */ `
         lastName
         verified
         artistAcc
+        avatar
+        biography
         favImg {
           id
           Src

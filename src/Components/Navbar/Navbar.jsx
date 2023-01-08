@@ -16,6 +16,8 @@ import { drawerList, Links } from "./Links";
 import { Link } from "react-router-dom";
 import { LoginPopup } from "./LoginPopup";
 import {signOut} from "../UserAuth/AuthUtils"
+var Scroll = require('react-scroll');
+var scroll = Scroll.animateScroll;
 
 export const Navbar = (props) => {
   const [open, setDrawer] = useState(false);
@@ -33,10 +35,8 @@ export const Navbar = (props) => {
     <>
       <AppBar className="appbar">
         <Toolbar>
-          <IconButton>
-            <Link to={"/"}>
+          <IconButton onClick={() =>scroll.scrollToTop()}>
               <img src={logo} className="logo" alt="logo"></img>
-            </Link>
           </IconButton>
           <ul className="nav-menu">
             {Links.map((item, idx) => {

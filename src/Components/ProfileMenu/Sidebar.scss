@@ -2,6 +2,7 @@
   height: 100vh;
   width: 8rem;
   padding-top: 25vh;
+  position: fixed;
 }
 
 .account-icon {
@@ -28,9 +29,9 @@
 .account-settings {
   height: 8rem;
   width: 8rem;
-  background-color: black;
   cursor: pointer;
   transition: all 0.3s ease;
+  border-top-right-radius: 10px;
   &:hover {
     .account-icon {
       left: 3rem;
@@ -68,6 +69,7 @@
   background-color: black;
   cursor: pointer;
   transition: all 0.3s ease;
+  border-bottom-right-radius: 10px;
   &:hover {
     .upload-icon {
       left: 3rem;

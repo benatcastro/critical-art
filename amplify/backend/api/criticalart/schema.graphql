@@ -16,6 +16,8 @@ type Account
   lastName: String
   verified: Boolean
   artistAcc: Boolean
+  avatar: String
+  biography: String
   favImg: image @hasOne
   images: [image] @hasMany
 }

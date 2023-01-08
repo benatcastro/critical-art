@@ -27,6 +27,8 @@ export const searchAccounts = /* GraphQL */ `
         lastName
         verified
         artistAcc
+        avatar
+        biography
         favImg {
           id
           Src
@@ -91,6 +93,8 @@ export const searchImages = /* GraphQL */ `
           lastName
           verified
           artistAcc
+          avatar
+          biography
           createdAt
           updatedAt
           accountFavImgId
@@ -131,6 +135,8 @@ export const getAccount = /* GraphQL */ `
       lastName
       verified
       artistAcc
+      avatar
+      biography
       favImg {
         id
         Src
@@ -143,6 +149,8 @@ export const getAccount = /* GraphQL */ `
           lastName
           verified
           artistAcc
+          avatar
+          biography
           createdAt
           updatedAt
           accountFavImgId
@@ -187,6 +195,8 @@ export const listAccounts = /* GraphQL */ `
         lastName
         verified
         artistAcc
+        avatar
+        biography
         favImg {
           id
           Src
@@ -221,6 +231,8 @@ export const getImage = /* GraphQL */ `
         lastName
         verified
         artistAcc
+        avatar
+        biography
         favImg {
           id
           Src
@@ -264,6 +276,8 @@ export const listImages = /* GraphQL */ `
           lastName
           verified
           artistAcc
+          avatar
+          biography
           createdAt
           updatedAt
           accountFavImgId
