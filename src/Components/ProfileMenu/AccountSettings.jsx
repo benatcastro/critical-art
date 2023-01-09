@@ -11,32 +11,35 @@ import {
   Fade,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { GetCurrentUserEmail, GetUserByEmail } from "../UserAuth/FetchUserInfo";
+import { GetCurrentUserByEmail, listUsers } from "../UserAuth/FetchUserInfo";
 import "./AccountSettings.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { createBrowserHistory } from "@remix-run/router";
+import { Auth } from "aws-amplify";
+
+const saveChanges = (data) => {};
 
 export const AccountSettings = () => {
   const [userData, setUserData] = useState();
   const [readOnly, setWrite] = useState(true);
   const [openPopper, setPopper] = useState(false);
   useEffect(() => {
-    fetchUserInfo();
     clearTimeout(waitForData);
+    listUsers();
+    resolveUserdata();
   }, []);
-  const fetchUserInfo = async () => {
+  const resolveUserdata = async () => {
     try {
-      GetCurrentUserEmail().then((email) => {
-        GetUserByEmail(email).then((userObject) => {
-          setUserData(userObject.Filter);
-        });
+      await GetCurrentUserByEmail().then((user) => {
+        setUserData(user);
       });
     } catch (error) {
-      console.log("Error fetching user profile:", error);
+      console.log("Error resolving userData:", error);
     }
   };
+  console.log("UserData:", userData);
   const waitForData = setTimeout(() => 250);
   const history = createBrowserHistory();
   const validationSchema = Yup.object().shape({
@@ -58,6 +61,7 @@ export const AccountSettings = () => {
     register,
     control,
     handleSubmit,
+	defaultValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -163,7 +167,11 @@ export const AccountSettings = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => setWrite(!readOnly)}
+              onClick={
+                readOnly
+                  ? () => setWrite(!readOnly)
+                  : () => handleSubmit(onSubmit)
+              }
             >
               <Typography color="basics.white">
                 {readOnly ? "Edit" : "Save"}

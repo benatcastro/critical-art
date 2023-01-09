@@ -4,12 +4,11 @@
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 type Account
   @model
-  @searchable
   @auth(
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam }]
   ) {
   id: ID!
-  email: String!
+  email: String @index(name: "byEmail", queryField: "accountByEmail")
   cognitoUser: String
   username: String
   firstName: String
@@ -24,7 +23,6 @@ type Account
 
 type image
   @model
-  @searchable
   @auth(
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam }]
   ) {

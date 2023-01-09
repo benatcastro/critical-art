@@ -1,129 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const searchAccounts = /* GraphQL */ `
-  query SearchAccounts(
-    $filter: SearchableAccountFilterInput
-    $sort: [SearchableAccountSortInput]
-    $limit: Int
-    $nextToken: String
-    $from: Int
-    $aggregates: [SearchableAccountAggregationInput]
-  ) {
-    searchAccounts(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-      from: $from
-      aggregates: $aggregates
-    ) {
-      items {
-        id
-        email
-        cognitoUser
-        username
-        firstName
-        lastName
-        verified
-        artistAcc
-        avatar
-        biography
-        favImg {
-          id
-          Src
-          ShortDesc
-          Description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        images {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        accountFavImgId
-      }
-      nextToken
-      total
-      aggregateItems {
-        name
-        result {
-          ... on SearchableAggregateScalarResult {
-            value
-          }
-          ... on SearchableAggregateBucketResult {
-            buckets {
-              key
-              doc_count
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-export const searchImages = /* GraphQL */ `
-  query SearchImages(
-    $filter: SearchableimageFilterInput
-    $sort: [SearchableimageSortInput]
-    $limit: Int
-    $nextToken: String
-    $from: Int
-    $aggregates: [SearchableimageAggregationInput]
-  ) {
-    searchImages(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-      from: $from
-      aggregates: $aggregates
-    ) {
-      items {
-        id
-        Src
-        author {
-          id
-          email
-          cognitoUser
-          username
-          firstName
-          lastName
-          verified
-          artistAcc
-          avatar
-          biography
-          createdAt
-          updatedAt
-          accountFavImgId
-        }
-        ShortDesc
-        Description
-        createdAt
-        updatedAt
-        accountImagesId
-      }
-      nextToken
-      total
-      aggregateItems {
-        name
-        result {
-          ... on SearchableAggregateScalarResult {
-            value
-          }
-          ... on SearchableAggregateBucketResult {
-            buckets {
-              key
-              doc_count
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 export const getAccount = /* GraphQL */ `
   query GetAccount($id: ID!) {
     getAccount(id: $id) {
@@ -287,6 +164,52 @@ export const listImages = /* GraphQL */ `
         createdAt
         updatedAt
         accountImagesId
+      }
+      nextToken
+    }
+  }
+`;
+export const accountByEmail = /* GraphQL */ `
+  query AccountByEmail(
+    $email: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAccountFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    accountByEmail(
+      email: $email
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        email
+        cognitoUser
+        username
+        firstName
+        lastName
+        verified
+        artistAcc
+        avatar
+        biography
+        favImg {
+          id
+          Src
+          ShortDesc
+          Description
+          createdAt
+          updatedAt
+          accountImagesId
+        }
+        images {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        accountFavImgId
       }
       nextToken
     }
