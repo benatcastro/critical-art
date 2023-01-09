@@ -22,7 +22,6 @@ export const AccountSettings = () => {
   const [userData, setUserData] = useState();
   const [readOnly, setWrite] = useState(true);
   const [openPopper, setPopper] = useState(false);
-  const [defaultValues, setDefaults] = useState([]);
   useEffect(() => {
     fetchUserInfo();
     clearTimeout(waitForData);
