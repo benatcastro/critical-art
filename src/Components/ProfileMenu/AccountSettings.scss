@@ -7,15 +7,12 @@
   width: 50vw;
   height: 60vh;
   background-color: white;
+  justify-content: center;
 }
 
-.user-data {
-  position: absolute;
-  margin-left: 20%;
-  display: flex;
-  width: 75%;
-  height: 80%;
-  display: inline-block;
+.update-data {
+  margin-right: 10%;
+  margin-left: 10%;
 }
 .fullname {
   display: grid;
