@@ -6,23 +6,25 @@
   transform: translate(-50%, -50%);
   width: 50vw;
   height: 60vh;
-  background-color: aqua;
+  background-color: white;
 }
-.avatar-container {
-  height: 100%;
-  width: 20%;
-  background-color: aquamarine;
-}
+
 .user-data {
   position: absolute;
   margin-left: 20%;
   display: flex;
-  width: 70%;
+  width: 75%;
   height: 80%;
-  background-color: wheat;
   display: inline-block;
 }
+.fullname {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-gap: 1rem;
+}
 
-.user-info-container {
-  margin: 5%;
+.user-email {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-gap: 1rem;
 }

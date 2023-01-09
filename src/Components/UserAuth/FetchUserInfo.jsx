@@ -21,7 +21,7 @@ export const GetCurrentUserEmail = async () => {
   try {
     const user = await Auth.currentAuthenticatedUser();
     const { attributes } = user;
-    const CurrentUser = GetUserByEmail(attributes.email);
+    const CurrentUser = await GetUserByEmail(attributes.email);
     // console.log("Current user: ", CurrentUser);
     return attributes.email;
   } catch (error) {
@@ -29,24 +29,18 @@ export const GetCurrentUserEmail = async () => {
   }
 };
 
-export const GetCurrentUserInfo = () => {
-  const [userInfo, setUserInfo] = useState();
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
-  const fetchUserInfo = async () => {
+  export const getUserInfo = async () => {
     try {
-      GetCurrentUserEmail().then((email) => {
+      await GetCurrentUserEmail().then((email) => {
         GetUserByEmail(email).then((userObject) => {
-          setUserInfo(userObject.Filter);
+			console.log("getUserInfo", userObject.Filter);
+          return (userObject.Filter);
         });
       });
     } catch (error) {
       console.log("Error fetching user profile:", error);
     }
   };
-  return { userInfo };
-};
 
 export const listUsers = async (id) => {
   try {
