@@ -15,6 +15,39 @@ import { GetCurrentUserByEmail, listUsers } from "../UserAuth/FetchUserInfo";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
+import { Storage, API } from "aws-amplify";
+import { updateAccount } from "../../graphql/mutations";
+
+const ChangeAvatar = () => {
+  const [file, setFile] = useState([]);
+  var id;
+  async function updateAvatar() {
+    try {
+	await GetCurrentUserByEmail().then((userId) => {
+		userId.map((items) => {
+			id = items.id
+			console.log("id", id);
+		})
+	})
+      const src = await Storage.put(file.name, file, {
+        contentType: "image/png",
+	});
+	const data = {
+		id: id,
+		avatar: file.name,
+	}
+	const updatedUser = await API.graphql({query: updateAccount, variables: {input: data }})
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  }
+  return (
+    <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
+      <input type="file" accept="image/**" onChange={e => setFile(e.target.files[0])} />
+      ;<Button onClick={updateAvatar}>Test</Button>
+    </Box>
+  );
+};
 
 export const AccountSettings = () => {
   const [userData, setUserData] = useState();
@@ -22,13 +55,30 @@ export const AccountSettings = () => {
   const [loadingUserData, setLoadingData] = useState(true);
   const [confirmChanges, setConfirmChanges] = useState(false);
   const [anchorElCancel, setAnchorElCancel] = React.useState(null);
+  const [anchorElAvatar, setAnchorElAvatar] = React.useState(null);
+  const [openAvatar, setOpenAvatar] = useState(false);
+  const [avatarMenu, setAvatarMenu] = useState("upload-avatar");
   const anchorRef = React.useRef();
   React.useEffect(() => {
     setTimeout(() => setAnchorElCancel(anchorRef?.current), 1);
+    setTimeout(() => setAnchorElAvatar(anchorRef?.current), 1);
   }, [anchorRef]);
-
-  const handleChanges = (event) => {
+  const handleAvatar = (event) => {
+    setAnchorElAvatar(event.currentTarget);
+    setOpenAvatar(!openAvatar);
+  };
+  const handleCloseAvatar = () => {
+    setAnchorElAvatar(null);
+    setOpenAvatar(!openAvatar);
+    setAvatarMenu("upload-avatar");
+  };
+  const handleCancel = (event) => {
     setAnchorElCancel(event.currentTarget);
+    setConfirmChanges(!confirmChanges);
+  };
+
+  const handleCancelClose = () => {
+    setAnchorElCancel(null);
     setConfirmChanges(!confirmChanges);
   };
 
@@ -57,7 +107,9 @@ export const AccountSettings = () => {
       .min(4, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters"),
     email: Yup.string().required("Email is required").email("Email is invalid"),
-    bio: Yup.string().max(100, "Biography must not exceed 100 characters"),
+    bio: Yup.string()
+      .max(100, "Biography must not exceed 100 characters")
+      .nullable(),
   });
   const {
     register,
@@ -99,7 +151,30 @@ export const AccountSettings = () => {
             alignItems="center"
             justifyContent="center"
           >
-            <IconButton key={2}>
+            <Popover
+              id="aria-describedby"
+              open={openAvatar}
+              anchorEl={anchorElAvatar}
+              onClose={handleCloseAvatar}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
+                {avatarMenu === "upload-avatar" ? (
+                  <Button
+                    size="small"
+                    onClick={() => setAvatarMenu("change-avatar")}
+                  >
+                    <Typography>Change avatar</Typography>
+                  </Button>
+                ) : (
+                  <ChangeAvatar />
+                )}
+              </Box>
+            </Popover>
+            <IconButton key={2} id="aria-describedby" onClick={handleAvatar}>
               <Avatar
                 key={3}
                 style={{ justifyContent: "center", display: "flex" }}
@@ -218,6 +293,7 @@ export const AccountSettings = () => {
               id="aria-describedby"
               open={confirmChanges}
               anchorEl={anchorElCancel}
+              onClose={handleCancelClose}
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "left",
@@ -241,7 +317,7 @@ export const AccountSettings = () => {
               <Button
                 id="aria-describedby"
                 type="button"
-                onClick={handleChanges}
+                onClick={handleCancel}
                 variant="contained"
               >
                 Cancel
