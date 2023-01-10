@@ -11,12 +11,9 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { GetCurrentUserByEmail, listUsers } from "../UserAuth/FetchUserInfo";
-import "./AccountSettings.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
-import { type } from "@testing-library/user-event/dist/type";
-import { padding } from "@mui/system";
 
 export const AccountSettings = () => {
   const [userData, setUserData] = useState();
@@ -47,8 +44,7 @@ export const AccountSettings = () => {
       .min(4, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters"),
     email: Yup.string().required("Email is required").email("Email is invalid"),
-    bio: Yup.string()
-      .max(100, "Biography must not exceed 100 characters"),
+    bio: Yup.string().max(100, "Biography must not exceed 100 characters"),
   });
   const {
     register,
@@ -57,14 +53,22 @@ export const AccountSettings = () => {
     setValue,
     formState: { errors },
   } = useForm({
-	resolver: yupResolver(validationSchema)
+    resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data) => console.log(data);
   if (!loadingUserData) {
     return userData.map((items) => {
+		const resetFields = () => {
+			setWrite(!readOnly)
+			setValue("firstname", items.firstName)
+			setValue("lastname", items.lastName)
+			setValue("email", items.email)
+			setValue("username", items.username)
+			setValue("bio", items.biography)
+		}
       return (
         <Paper
-		key={0}
+          key={0}
           className="account-settings-contair"
           style={{
             position: "absolute",
@@ -75,7 +79,7 @@ export const AccountSettings = () => {
           }}
         >
           <Box
-		  key={1}
+            key={1}
             display="flex"
             width="100%"
             alignItems="center"
@@ -83,7 +87,7 @@ export const AccountSettings = () => {
           >
             <IconButton key={2}>
               <Avatar
-			  key={3}
+                key={3}
                 style={{ justifyContent: "center", display: "flex" }}
                 sx={{ height: 128, width: 128 }}
                 src={userData.avatar}
@@ -91,9 +95,10 @@ export const AccountSettings = () => {
               />
             </IconButton>
           </Box>
+		  <Box textAlign="center" mt={2} mb={2}><Typography fontWeight="500">Update your account settings</Typography></Box>
           <Box ml="5%" mr="5%" key={4}>
             <Grid
-			key={5}
+              key={5}
               container
               justifyContent="center"
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -180,11 +185,35 @@ export const AccountSettings = () => {
                 />
               </Grid>
             </Grid>
-            <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={
+                readOnly ? () => setWrite(!readOnly) : handleSubmit(onSubmit)
+              }
+            >
+              <Typography color="basics.whte">
+                {readOnly ? "Edit" : "Save"}
+              </Typography>
+            </Button>
+            {!readOnly ? <Button onClick={resetFields} variant="contained">Cancel</Button> : null}
           </Box>
         </Paper>
       );
     });
+  } else {
+    return (
+      <Paper>
+        <Box
+          display="flex"
+          width="100%"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <CircularProgress sx={{ color: "secondary" }} />
+        </Box>
+      </Paper>
+    );
   }
 };
 /* */
