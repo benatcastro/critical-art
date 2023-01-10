@@ -3,12 +3,11 @@ import {
   CircularProgress,
   Typography,
   Box,
-  Button,
   TextField,
   Paper,
   IconButton,
-  Popper,
-  Fade,
+  Button,
+  Grid,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { GetCurrentUserByEmail, listUsers } from "../UserAuth/FetchUserInfo";
@@ -16,168 +15,101 @@ import "./AccountSettings.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
-import { createBrowserHistory } from "@remix-run/router";
-
-const saveChanges = (data) => {};
+import { type } from "@testing-library/user-event/dist/type";
+import { padding } from "@mui/system";
 
 export const AccountSettings = () => {
   const [userData, setUserData] = useState();
   const [readOnly, setWrite] = useState(true);
-  const [openPopper, setPopper] = useState(false);
+  const [loadingUserData, setLoadingData] = useState(true);
   useEffect(() => {
-    clearTimeout(waitForData);
-    listUsers();
+    const resolveUserdata = async () => {
+      try {
+        setLoadingData(true);
+        await GetCurrentUserByEmail().then((user) => {
+          setUserData(user);
+        });
+      } catch (error) {
+        console.log("Error resolving userData:", error);
+        setUserData(null);
+      } finally {
+        setLoadingData(false);
+      }
+    };
     resolveUserdata();
   }, []);
-  const resolveUserdata = async () => {
-    try {
-      await GetCurrentUserByEmail().then((user) => {
-        setUserData(user);
-      });
-    } catch (error) {
-      console.log("Error resolving userData:", error);
-    }
-  };
-  console.log("UserData:", userData);
-  const waitForData = setTimeout(() => 250);
-  const history = createBrowserHistory();
-  const validationSchema = Yup.object().shape({
-    firstname: Yup.string().required("First name is required"),
-    lastname: Yup.string().required("Last name is required"),
-    username: Yup.string()
-      .required("Username is required")
-      .min(4, "Username must be at least 4 characters")
-      .max(20, "Username must not exceed 20 characters"),
-    email: Yup.string().required("Email is required").email("Email is invalid"),
-    bio: Yup.string()
-      .min(10, "Bio must be at least 10 characters long")
-      .max(100, "Bio must not exceed 20 characters"),
-  });
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
-  };
+
   const {
     register,
     control,
     handleSubmit,
-    defaultValues,
+    setValue,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(validationSchema),
-  });
-
-  return (
-    <Paper className="account-settings-container">
-      <div className="user-data">
-        {typeof userData === "undefined"
-          ? waitForData && <CircularProgress className="loading-data" />
-          : userData.map((items, idx) => {
-              return (
-                <div className="update-data" key={0}>
-                  <Box
-                    display="flex"
-                    width="100%"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <IconButton>
-                      <Avatar
-                        style={{ justifyContent: "center", display: "flex" }}
-                        sx={{ height: 128, width: 128 }}
-                        src={items.avatar}
-                        alt={items.username}
-                      />
-                    </IconButton>
-                  </Box>
-                  <div className="fullname" key={1}>
-                    <TextField
-                      label="First Name"
-                      key={idx}
-                      id="firstname"
-                      name="firstname"
-                      margin="normal"
-                      defaultValue={items.firstName}
-                      {...register("firstname")}
-                      error={errors.firstname ? true : false}
-                      helperText={
-                        errors.firstname ? errors.firstname.message : null
-                      }
-                      inputProps={{
-                        readOnly: readOnly ? true : false,
-                      }}
-                    />
-                    <TextField
-                      key={2}
-                      label="Last Name"
-                      id="lastname"
-                      name="lastname"
-                      margin="normal"
-                      defaultValue={items.lastName}
-                      {...register("lastname")}
-                      error={errors.lastname ? true : false}
-                      helperText={
-                        errors.lastname ? errors.lastname.message : null
-                      }
-                      inputProps={{
-                        readOnly: readOnly ? true : false,
-                      }}
-                    />
-                  </div>
-                  <div className="user-email">
-                    <TextField
-                      key={3}
-                      label="Username"
-                      variant="outlined"
-                      id="username"
-                      name="username"
-                      margin="normal"
-                      defaultValue={items.username}
-                      {...register("username")}
-                      error={errors.username ? true : false}
-                      helperText={
-                        errors.username ? errors.username.message : null
-                      }
-                      inputProps={{
-                        readOnly: readOnly ? true : false,
-                      }}
-                    />
-                    <TextField
-                      key={4}
-                      label="Email"
-                      id="email"
-                      name="email"
-                      defaultValue={items.email}
-                      margin="normal"
-                      {...register("email")}
-                      error={errors.email ? true : false}
-                      helperText={errors.email ? errors.email.message : null}
-                      inputProps={{
-                        readOnly: readOnly ? true : false,
-                      }}
-                    />
-                  </div>
-                  <TextField
-                    key={5}
-                    label="Biography"
-                    multiline
-                    rows={4}
-                    id="bio"
-                    name="bio"
-                    fullWidth
-                    defaultValue={items.biography}
-                    margin="normal"
-                    {...register("bio")}
-                    error={errors.bio ? true : false}
-                    helperText={errors.bio ? errors.bio.message : null}
-                    inputProps={{
-                      readOnly: readOnly ? true : false,
-                    }}
-                  />
-                  <div className="buttons"></div>
-                </div>
-              );
-            })}
-      </div>
-    </Paper>
-  );
+  } = useForm({});
+  if (!loadingUserData) {
+    return (
+      <Paper className="account-settings-contair" style={{position: "absolute", left: "50%", top: "60%", transform: "translate(-50%, -50%)", paddingBottom: "2%"}}>
+        <Box
+          display="flex"
+          width="100%"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <IconButton>
+            <Avatar
+              style={{ justifyContent: "center", display: "flex" }}
+              sx={{ height: 128, width: 128 }}
+              src={userData.avatar}
+              alt={userData.username}
+            />
+          </IconButton>
+        </Box>
+        <Box ml="5%" mr="5%">
+          <Grid
+            container
+            justifyContent="center"
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+			rowSpacing={2}
+          >
+            <Grid item xs={6}>
+              <Typography color="basics.black">First Name</Typography>
+              <TextField fullWidth></TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography color="basics.black">Last Name</Typography>
+              <TextField fullWidth></TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography color="basics.black">Username</Typography>
+              <TextField fullWidth></TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography color="basics.black">Email</Typography>
+              <TextField fullWidth></TextField>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+    );
+  }
 };
+/* */
+/*{typeof userData === "undefined"
+          ? waitForData && (
+              <Box
+                display="flex"
+                mt="25%"
+                width="100%"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <CircularProgress color="secondary" />
+              </Box>
+            )
+          : userData.map((items, idx) => {
+              const onSubmit = (data) => {
+                console.log("Form data:", data);
+              };
+              return (
+              );
+            })}*/
