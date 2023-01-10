@@ -8,6 +8,7 @@ import {
   IconButton,
   Button,
   Grid,
+  Popover,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { GetCurrentUserByEmail, listUsers } from "../UserAuth/FetchUserInfo";
@@ -19,6 +20,18 @@ export const AccountSettings = () => {
   const [userData, setUserData] = useState();
   const [readOnly, setWrite] = useState(true);
   const [loadingUserData, setLoadingData] = useState(true);
+  const [confirmChanges, setConfirmChanges] = useState(false);
+  const [anchorElCancel, setAnchorElCancel] = React.useState(null);
+  const anchorRef = React.useRef();
+  React.useEffect(() => {
+    setTimeout(() => setAnchorElCancel(anchorRef?.current), 1);
+  }, [anchorRef]);
+
+  const handleChanges = (event) => {
+    setAnchorElCancel(event.currentTarget);
+    setConfirmChanges(!confirmChanges);
+  };
+
   useEffect(() => {
     const resolveUserdata = async () => {
       try {
@@ -58,14 +71,15 @@ export const AccountSettings = () => {
   const onSubmit = (data) => console.log(data);
   if (!loadingUserData) {
     return userData.map((items) => {
-		const resetFields = () => {
-			setWrite(!readOnly)
-			setValue("firstname", items.firstName)
-			setValue("lastname", items.lastName)
-			setValue("email", items.email)
-			setValue("username", items.username)
-			setValue("bio", items.biography)
-		}
+      const resetFields = () => {
+        setWrite(!readOnly);
+        setConfirmChanges(!confirmChanges);
+        setValue("firstname", items.firstName);
+        setValue("lastname", items.lastName);
+        setValue("email", items.email);
+        setValue("username", items.username);
+        setValue("bio", items.biography);
+      };
       return (
         <Paper
           key={0}
@@ -95,7 +109,11 @@ export const AccountSettings = () => {
               />
             </IconButton>
           </Box>
-		  <Box textAlign="center" mt={2} mb={2}><Typography fontWeight="500">Update your account settings</Typography></Box>
+          <Box textAlign="center" mt={2} mb={2}>
+            <Typography fontWeight="500">
+              Update your account settings
+            </Typography>
+          </Box>
           <Box ml="5%" mr="5%" key={4}>
             <Grid
               key={5}
@@ -196,7 +214,39 @@ export const AccountSettings = () => {
                 {readOnly ? "Edit" : "Save"}
               </Typography>
             </Button>
-            {!readOnly ? <Button onClick={resetFields} variant="contained">Cancel</Button> : null}
+            <Popover
+              id="aria-describedby"
+              open={confirmChanges}
+              anchorEl={anchorElCancel}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
+                <Box>
+                  <Typography color="">Cancel changes?</Typography>
+                </Box>
+                <Grid>
+                  <Button onClick={resetFields}>
+                    <Typography color="">Yes</Typography>
+                  </Button>
+                  <Button onClick={() => setConfirmChanges(!confirmChanges)}>
+                    <Typography color="">No</Typography>
+                  </Button>
+                </Grid>
+              </Box>
+            </Popover>
+            {!readOnly ? (
+              <Button
+                id="aria-describedby"
+                type="button"
+                onClick={handleChanges}
+                variant="contained"
+              >
+                Cancel
+              </Button>
+            ) : null}
           </Box>
         </Paper>
       );
