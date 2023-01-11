@@ -17,7 +17,7 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { Storage, API } from "aws-amplify";
 import { updateAccount } from "../../graphql/mutations";
-import { type } from "@testing-library/user-event/dist/type";
+import PublishIcon from "@mui/icons-material/Publish";
 
 const ChangeAvatar = () => {
   const [file, setFile] = useState([]);
@@ -45,12 +45,19 @@ const ChangeAvatar = () => {
   }
   return (
     <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
-
-	  <input
+      <IconButton>
+        <label htmlFor={"upload-button"}>
+          <div className="chooseFile">
+            <PublishIcon style={{ mr: 10, width: 20 }} />
+          </div>
+        </label>
+      </IconButton>
+      <input
         type="file"
         accept="image/**"
+        id="upload-button"
+        style={{ display: "none" }}
         onChange={(e) => setFile(e.target.files[0])}
-        style={{ Color: "white" }}
       />
       <Button onClick={updateAvatar}>Upload</Button>
     </Box>
