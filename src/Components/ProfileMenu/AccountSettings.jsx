@@ -17,36 +17,65 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { Storage, API } from "aws-amplify";
 import { updateAccount } from "../../graphql/mutations";
+import { type } from "@testing-library/user-event/dist/type";
 
 const ChangeAvatar = () => {
   const [file, setFile] = useState([]);
   var id;
   async function updateAvatar() {
     try {
-	await GetCurrentUserByEmail().then((userId) => {
-		userId.map((items) => {
-			id = items.id
-			console.log("id", id);
-		})
-	})
-      const src = await Storage.put(file.name, file, {
-        contentType: "image/png",
-	});
-	const data = {
-		id: id,
-		avatar: file.name,
-	}
-	const updatedUser = await API.graphql({query: updateAccount, variables: {input: data }})
+      await GetCurrentUserByEmail().then((userId) => {
+        userId.map((items) => {
+          id = items.id;
+          console.log("id", id);
+        });
+      });
+      const src = await Storage.put(file.name, file, {});
+      const data = {
+        id: id,
+        avatar: file.name,
+      };
+      const updatedUser = await API.graphql({
+        query: updateAccount,
+        variables: { input: data },
+      });
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
   }
   return (
     <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
-      <input type="file" accept="image/**" onChange={e => setFile(e.target.files[0])} />
-      ;<Button onClick={updateAvatar}>Test</Button>
+      <input
+        type="file"
+        accept="image/**"
+        onChange={(e) => setFile(e.target.files[0])}
+      />
+      ;<Button onClick={updateAvatar}>Upload</Button>
     </Box>
   );
+};
+
+const saveDataChanges = async (data) => {
+	var userID;
+	await GetCurrentUserByEmail().then((user) => {
+		user.map((items) =>{
+			userID = items.id
+		})
+	})
+  const updateData = {
+	id: userID,
+    email: data.email,
+    username: data.username,
+    firstName: data.firstname,
+    lastName: data.lastname,
+    biography: data.bio,
+	verified: true,
+  };
+  console.log(updateData);
+  await API.graphql({
+    query: updateAccount,
+    variables: { input: updateData },
+  });
 };
 
 export const AccountSettings = () => {
@@ -58,6 +87,7 @@ export const AccountSettings = () => {
   const [anchorElAvatar, setAnchorElAvatar] = React.useState(null);
   const [openAvatar, setOpenAvatar] = useState(false);
   const [avatarMenu, setAvatarMenu] = useState("upload-avatar");
+  const [avatar, setAvatar] = useState();
   const anchorRef = React.useRef();
   React.useEffect(() => {
     setTimeout(() => setAnchorElCancel(anchorRef?.current), 1);
@@ -99,6 +129,23 @@ export const AccountSettings = () => {
     resolveUserdata();
   }, []);
 
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      var userAvatar;
+      await GetCurrentUserByEmail().then((user) => {
+        userAvatar = user;
+      });
+      userAvatar.map(async (items) => {
+        if (items.avatar) {
+          const avatarKey = await Storage.get(items.avatar);
+          console.log("avatarkey", avatarKey);
+          items.avatar = avatarKey;
+        }
+        return items;
+      });
+    };
+    fetchAvatar();
+  }, []);
   const validationSchema = Yup.object().shape({
     firstname: Yup.string().required("First name is required"),
     lastname: Yup.string().required("Last name is required"),
@@ -120,7 +167,10 @@ export const AccountSettings = () => {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log("Updating", data);
+    saveDataChanges(data);
+  };
   if (!loadingUserData) {
     return userData.map((items) => {
       const resetFields = () => {
@@ -144,6 +194,7 @@ export const AccountSettings = () => {
             paddingBottom: "2%",
           }}
         >
+          <img src={items.avatar} alt="test"></img>
           <Box
             key={1}
             display="flex"
@@ -179,13 +230,13 @@ export const AccountSettings = () => {
                 key={3}
                 style={{ justifyContent: "center", display: "flex" }}
                 sx={{ height: 128, width: 128 }}
-                src={userData.avatar}
-                alt={userData.username}
+                src={items.avatar}
+                alt={items.username}
               />
             </IconButton>
           </Box>
           <Box textAlign="center" mt={2} mb={2}>
-            <Typography fontWeight="500">
+            <Typography fontWeight="500" color="basics.black">
               Update your account settings
             </Typography>
           </Box>
@@ -260,7 +311,9 @@ export const AccountSettings = () => {
                 ></TextField>
               </Grid>
               <Grid container ml={3} key={10}>
-                <Typography color="basics.black">Biography</Typography>
+                <Typography mt={1} color="basics.black">
+                  Biography
+                </Typography>
                 <TextField
                   multiline
                   rows={4}
@@ -342,23 +395,3 @@ export const AccountSettings = () => {
     );
   }
 };
-/* */
-/*{typeof userData === "undefined"
-          ? waitForData && (
-              <Box
-                display="flex"
-                mt="25%"
-                width="100%"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <CircularProgress color="secondary" />
-              </Box>
-            )
-          : userData.map((items, idx) => {
-              const onSubmit = (data) => {
-                console.log("Form data:", data);
-              };
-              return (
-              );
-            })}*/
