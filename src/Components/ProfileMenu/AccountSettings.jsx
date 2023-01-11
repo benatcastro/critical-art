@@ -30,12 +30,12 @@ const ChangeAvatar = () => {
           console.log("id", id);
         });
       });
-      const src = await Storage.put(file.name, file, {});
+      await Storage.put(file.name, file, {});
       const data = {
         id: id,
         avatar: file.name,
       };
-      const updatedUser = await API.graphql({
+      await API.graphql({
         query: updateAccount,
         variables: { input: data },
       });
@@ -197,7 +197,6 @@ export const AccountSettings = () => {
       return (
         <Paper
           key={0}
-          className="account-settings-contair"
           style={{
             position: "absolute",
             left: "50%",
@@ -247,7 +246,7 @@ export const AccountSettings = () => {
             </IconButton>
           </Box>
           <Box textAlign="center" mt={2} mb={2}>
-            <Typography fontWeight="500" color="basics.black">
+            <Typography fontSize={20} fontWeight="500" color="basics.black">
               Update your account settings
             </Typography>
           </Box>
@@ -297,7 +296,7 @@ export const AccountSettings = () => {
                   id="username"
                   name="username"
                   fullWidth
-                  defaultValue={items.firstName}
+                  defaultValue={items.username}
                   {...register("username")}
                   error={errors.username ? true : false}
                   helperText={errors.username ? errors.username.message : null}
@@ -393,16 +392,16 @@ export const AccountSettings = () => {
     });
   } else {
     return (
-      <Paper>
-        <Box
-          display="flex"
-          width="100%"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <CircularProgress sx={{ color: "secondary" }} />
-        </Box>
-      </Paper>
+      <Box
+        display="flex"
+        height="100vh"
+        width="100%"
+        alignItems="center"
+        justifyContent="center"
+        bgcolor="primary.light"
+      >
+        <CircularProgress sx={{ color: "secondary.main" }} />
+      </Box>
     );
   }
 };
