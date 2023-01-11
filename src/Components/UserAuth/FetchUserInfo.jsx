@@ -27,7 +27,6 @@ export const GetCurrentUserByEmail = async (__email__) => {
       query: accountByEmail,
       variables: { email: attributes.email },
     });
-    console.log("Search:", userByEmail);
 	return (userByEmail.data.accountByEmail.items)
   } catch (error) {
     console.log("Error getting user by email:", error);

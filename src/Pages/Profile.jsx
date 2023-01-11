@@ -28,19 +28,48 @@ export const Profile = () => {
       });
     }
   };
-  console.log("test");
   return (
     <>
       {IsAuth() ? null : <p>You need to be logged</p>}
       <ProfileSidebar handleScroll={handleScroll} />
-      <div ref={accountSettingsPage}>
+      <div
+        ref={accountSettingsPage}
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "60%",
+          transform: "translate(-50%, -50%)",
+          width: "75%",
+        }}
+      >
         <AccountSettings />
-		<PasswordSettings />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "140%",
+          transform: "translate(-50%, -50%)",
+          width: "75%",
+          paddingBottom: "2%",
+        }}
+      >
+        <PasswordSettings />
       </div>
       <div ref={imgSettingsPage}>
         <ImageSettings />
       </div>
-      <div ref={uploadImgPage}>
+      <div
+        ref={uploadImgPage}
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "180%",
+          transform: "translate(-50%, -50%)",
+          width: "75%",
+          paddingBottom: "2%",
+        }}
+      >
         <UploadImage />
       </div>
     </>

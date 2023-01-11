@@ -1,4 +1,4 @@
-import { Typography, Box, TextField, Paper, Grid } from "@mui/material";
+import { Typography, Box, TextField, Paper, Grid, Divider, Button } from "@mui/material";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -7,79 +7,55 @@ import { useForm } from "react-hook-form";
 const updatePassword = (data) => {};
 
 export const PasswordSettings = () => {
-  const [readOnly, setWrite] = useState(true);
+
   const {
     register,
     control,
     handleSubmit,
-    setValue,
     formState: { errors },
-  } = useForm({});
+  } = useForm();
   const onSubmit = (data) => {
     console.log("Updating", data);
     updatePassword(data);
   };
   return (
-    <Paper
-      key={0}
-      className="account-settings-contair"
-      style={{
-        position: "absolute",
-        left: "50%",
-        top: "120%",
-        transform: "translate(-50%, -50%)",
-        width: "50vw",
-        paddingBottom: "2%",
-      }}
-    >
+    <Paper style={{ paddingBottom: "2%" }} elevation={3}>
       <Box
         display="flex"
         width="100%"
         alignItems="center"
         justifyContent="center"
-        boxShadow={1}
       >
         <Box>
-          <Typography>Edit your password</Typography>
-        </Box>
-        <Box>
-          <Grid
-            container
-            justifyContent="center"
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            rowSpacing={2}
-          >
-            <Grid item xs={6}>
-              <Typography color="basics.black">New password</Typography>
-              <TextField
-                id="firstname"
-                name="firstname"
-                fullWidth
-                // defaultValue={}
-                {...register("firstname")}
-                error={errors.lastname ? true : false}
-                helperText={errors.firstname ? errors.firstname.message : null}
-                inputProps={{
-                  readOnly: readOnly ? true : false,
-                }}
-              ></TextField>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography color="basics.black">Confirm password</Typography>
-              <TextField
-                id="lastname"
-                name="lastname"
-                fullWidth
-                // defaultValue={items.lastName}
-                {...register("lastname")}
-                error={errors.lastname ? true : false}
-                helperText={errors.lastName ? errors.lastName.message : null}
-                inputProps={{
-                  readOnly: readOnly ? true : false,
-                }}
-              ></TextField>
-            </Grid>
-          </Grid>
+          <Typography fontSize={20} fontWeight="500" color="basics.black" mb={1} mt={4}>
+            Update your password
+          </Typography>
+		  <Divider color="basics.black" sx={{mb: 3,}} style={{height: 2}}/>
+          <Typography color="basics.black">Current password</Typography>
+          <TextField
+            id="currentpass"
+            name="currentpass"
+			type="password"
+            fullWidth
+            {...register("currentpass")}
+          ></TextField>
+          <Typography color="basics.black">New password</Typography>
+          <TextField
+            id="newpass"
+            name="newpass"
+			type="password"
+            fullWidth
+            {...register("newpass")}
+          ></TextField>
+          <Typography color="basics.black">Confirm password</Typography>
+          <TextField
+            id="confirmpass"
+            name="confirmpass"
+			type="password"
+            fullWidth
+            {...register("confirmpass")}
+          ></TextField>
+		  <Button variant="contained" color="secondary" onClick={() => handleSubmit(onSubmit)} style={{marginTop: 10}}>Save changes</Button>
         </Box>
       </Box>
     </Paper>

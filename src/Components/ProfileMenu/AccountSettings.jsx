@@ -195,16 +195,7 @@ export const AccountSettings = () => {
         setValue("bio", items.biography);
       };
       return (
-        <Paper
-          key={0}
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "60%",
-            transform: "translate(-50%, -50%)",
-            paddingBottom: "2%",
-          }}
-        >
+        <Paper style={{ paddingBottom: "2%" }} elevation={3}>
           <Box
             key={1}
             display="flex"
@@ -213,6 +204,7 @@ export const AccountSettings = () => {
             justifyContent="center"
           >
             <Popover
+			key={20}
               id="aria-describedby"
               open={openAvatar}
               anchorEl={anchorElAvatar}
@@ -246,7 +238,12 @@ export const AccountSettings = () => {
             </IconButton>
           </Box>
           <Box textAlign="center" mt={2} mb={2}>
-            <Typography fontSize={20} fontWeight="500" color="basics.black">
+            <Typography
+              key={15}
+              fontSize={20}
+              fontWeight="500"
+              color="basics.black"
+            >
               Update your account settings
             </Typography>
           </Box>
@@ -342,17 +339,19 @@ export const AccountSettings = () => {
               </Grid>
             </Grid>
             <Button
+              key={11}
               color="secondary"
               variant="contained"
               onClick={
                 readOnly ? () => setWrite(!readOnly) : handleSubmit(onSubmit)
               }
             >
-              <Typography color="basics.whte">
+              <Typography key={12} color="basics.whte">
                 {readOnly ? "Edit" : "Save"}
               </Typography>
             </Button>
             <Popover
+              key={13}
               id="aria-describedby"
               open={confirmChanges}
               anchorEl={anchorElCancel}
@@ -364,13 +363,20 @@ export const AccountSettings = () => {
             >
               <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
                 <Box>
-                  <Typography color="">Cancel changes?</Typography>
+                  <Typography key={14} color="">
+                    Cancel changes?
+                  </Typography>
                 </Box>
                 <Grid>
-                  <Button onClick={resetFields}>
-                    <Typography color="">Yes</Typography>
+                  <Button key={15} onClick={resetFields}>
+                    <Typography key={16} color="">
+                      Yes
+                    </Typography>
                   </Button>
-                  <Button onClick={() => setConfirmChanges(!confirmChanges)}>
+                  <Button
+                    key={17}
+                    onClick={() => setConfirmChanges(!confirmChanges)}
+                  >
                     <Typography color="">No</Typography>
                   </Button>
                 </Grid>
@@ -378,6 +384,7 @@ export const AccountSettings = () => {
             </Popover>
             {!readOnly ? (
               <Button
+                key={18}
                 id="aria-describedby"
                 type="button"
                 onClick={handleCancel}
