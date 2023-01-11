@@ -19,7 +19,8 @@ export const createAccount = /* GraphQL */ `
       biography
       favImg {
         id
-        Src
+        authorName
+        src
         author {
           id
           email
@@ -35,8 +36,8 @@ export const createAccount = /* GraphQL */ `
           updatedAt
           accountFavImgId
         }
-        ShortDesc
-        Description
+        shortDesc
+        description
         createdAt
         updatedAt
         accountImagesId
@@ -44,9 +45,10 @@ export const createAccount = /* GraphQL */ `
       images {
         items {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -77,7 +79,8 @@ export const updateAccount = /* GraphQL */ `
       biography
       favImg {
         id
-        Src
+        authorName
+        src
         author {
           id
           email
@@ -93,8 +96,8 @@ export const updateAccount = /* GraphQL */ `
           updatedAt
           accountFavImgId
         }
-        ShortDesc
-        Description
+        shortDesc
+        description
         createdAt
         updatedAt
         accountImagesId
@@ -102,9 +105,10 @@ export const updateAccount = /* GraphQL */ `
       images {
         items {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -135,7 +139,8 @@ export const deleteAccount = /* GraphQL */ `
       biography
       favImg {
         id
-        Src
+        authorName
+        src
         author {
           id
           email
@@ -151,8 +156,8 @@ export const deleteAccount = /* GraphQL */ `
           updatedAt
           accountFavImgId
         }
-        ShortDesc
-        Description
+        shortDesc
+        description
         createdAt
         updatedAt
         accountImagesId
@@ -160,9 +165,10 @@ export const deleteAccount = /* GraphQL */ `
       images {
         items {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -182,7 +188,8 @@ export const createImage = /* GraphQL */ `
   ) {
     createImage(input: $input, condition: $condition) {
       id
-      Src
+      authorName
+      src
       author {
         id
         email
@@ -196,9 +203,10 @@ export const createImage = /* GraphQL */ `
         biography
         favImg {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -210,8 +218,8 @@ export const createImage = /* GraphQL */ `
         updatedAt
         accountFavImgId
       }
-      ShortDesc
-      Description
+      shortDesc
+      description
       createdAt
       updatedAt
       accountImagesId
@@ -225,7 +233,8 @@ export const updateImage = /* GraphQL */ `
   ) {
     updateImage(input: $input, condition: $condition) {
       id
-      Src
+      authorName
+      src
       author {
         id
         email
@@ -239,9 +248,10 @@ export const updateImage = /* GraphQL */ `
         biography
         favImg {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -253,8 +263,8 @@ export const updateImage = /* GraphQL */ `
         updatedAt
         accountFavImgId
       }
-      ShortDesc
-      Description
+      shortDesc
+      description
       createdAt
       updatedAt
       accountImagesId
@@ -268,7 +278,8 @@ export const deleteImage = /* GraphQL */ `
   ) {
     deleteImage(input: $input, condition: $condition) {
       id
-      Src
+      authorName
+      src
       author {
         id
         email
@@ -282,9 +293,10 @@ export const deleteImage = /* GraphQL */ `
         biography
         favImg {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -296,8 +308,8 @@ export const deleteImage = /* GraphQL */ `
         updatedAt
         accountFavImgId
       }
-      ShortDesc
-      Description
+      shortDesc
+      description
       createdAt
       updatedAt
       accountImagesId

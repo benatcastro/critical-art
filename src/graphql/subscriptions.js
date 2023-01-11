@@ -16,7 +16,8 @@ export const onCreateAccount = /* GraphQL */ `
       biography
       favImg {
         id
-        Src
+        authorName
+        src
         author {
           id
           email
@@ -32,8 +33,8 @@ export const onCreateAccount = /* GraphQL */ `
           updatedAt
           accountFavImgId
         }
-        ShortDesc
-        Description
+        shortDesc
+        description
         createdAt
         updatedAt
         accountImagesId
@@ -41,9 +42,10 @@ export const onCreateAccount = /* GraphQL */ `
       images {
         items {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -71,7 +73,8 @@ export const onUpdateAccount = /* GraphQL */ `
       biography
       favImg {
         id
-        Src
+        authorName
+        src
         author {
           id
           email
@@ -87,8 +90,8 @@ export const onUpdateAccount = /* GraphQL */ `
           updatedAt
           accountFavImgId
         }
-        ShortDesc
-        Description
+        shortDesc
+        description
         createdAt
         updatedAt
         accountImagesId
@@ -96,9 +99,10 @@ export const onUpdateAccount = /* GraphQL */ `
       images {
         items {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -126,7 +130,8 @@ export const onDeleteAccount = /* GraphQL */ `
       biography
       favImg {
         id
-        Src
+        authorName
+        src
         author {
           id
           email
@@ -142,8 +147,8 @@ export const onDeleteAccount = /* GraphQL */ `
           updatedAt
           accountFavImgId
         }
-        ShortDesc
-        Description
+        shortDesc
+        description
         createdAt
         updatedAt
         accountImagesId
@@ -151,9 +156,10 @@ export const onDeleteAccount = /* GraphQL */ `
       images {
         items {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -170,7 +176,8 @@ export const onCreateImage = /* GraphQL */ `
   subscription OnCreateImage($filter: ModelSubscriptionImageFilterInput) {
     onCreateImage(filter: $filter) {
       id
-      Src
+      authorName
+      src
       author {
         id
         email
@@ -184,9 +191,10 @@ export const onCreateImage = /* GraphQL */ `
         biography
         favImg {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -198,8 +206,8 @@ export const onCreateImage = /* GraphQL */ `
         updatedAt
         accountFavImgId
       }
-      ShortDesc
-      Description
+      shortDesc
+      description
       createdAt
       updatedAt
       accountImagesId
@@ -210,7 +218,8 @@ export const onUpdateImage = /* GraphQL */ `
   subscription OnUpdateImage($filter: ModelSubscriptionImageFilterInput) {
     onUpdateImage(filter: $filter) {
       id
-      Src
+      authorName
+      src
       author {
         id
         email
@@ -224,9 +233,10 @@ export const onUpdateImage = /* GraphQL */ `
         biography
         favImg {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -238,8 +248,8 @@ export const onUpdateImage = /* GraphQL */ `
         updatedAt
         accountFavImgId
       }
-      ShortDesc
-      Description
+      shortDesc
+      description
       createdAt
       updatedAt
       accountImagesId
@@ -250,7 +260,8 @@ export const onDeleteImage = /* GraphQL */ `
   subscription OnDeleteImage($filter: ModelSubscriptionImageFilterInput) {
     onDeleteImage(filter: $filter) {
       id
-      Src
+      authorName
+      src
       author {
         id
         email
@@ -264,9 +275,10 @@ export const onDeleteImage = /* GraphQL */ `
         biography
         favImg {
           id
-          Src
-          ShortDesc
-          Description
+          authorName
+          src
+          shortDesc
+          description
           createdAt
           updatedAt
           accountImagesId
@@ -278,8 +290,8 @@ export const onDeleteImage = /* GraphQL */ `
         updatedAt
         accountFavImgId
       }
-      ShortDesc
-      Description
+      shortDesc
+      description
       createdAt
       updatedAt
       accountImagesId

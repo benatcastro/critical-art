@@ -45,31 +45,33 @@ const ChangeAvatar = () => {
   }
   return (
     <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
-      <input
+
+	  <input
         type="file"
         accept="image/**"
         onChange={(e) => setFile(e.target.files[0])}
+        style={{ Color: "white" }}
       />
-      ;<Button onClick={updateAvatar}>Upload</Button>
+      <Button onClick={updateAvatar}>Upload</Button>
     </Box>
   );
 };
 
 const saveDataChanges = async (data) => {
-	var userID;
-	await GetCurrentUserByEmail().then((user) => {
-		user.map((items) =>{
-			userID = items.id
-		})
-	})
+  var userID;
+  await GetCurrentUserByEmail().then((user) => {
+    user.map((items) => {
+      userID = items.id;
+    });
+  });
   const updateData = {
-	id: userID,
+    id: userID,
     email: data.email,
     username: data.username,
     firstName: data.firstname,
     lastName: data.lastname,
     biography: data.bio,
-	verified: true,
+    verified: true,
   };
   console.log(updateData);
   await API.graphql({
@@ -137,9 +139,12 @@ export const AccountSettings = () => {
       });
       userAvatar.map(async (items) => {
         if (items.avatar) {
-          const avatarKey = await Storage.get(items.avatar);
+          const avatarKey = await Storage.get(items.avatar).then(
+            (avatarValue) => {
+              setAvatar(avatarValue);
+            }
+          );
           console.log("avatarkey", avatarKey);
-          items.avatar = avatarKey;
         }
         return items;
       });
@@ -194,7 +199,6 @@ export const AccountSettings = () => {
             paddingBottom: "2%",
           }}
         >
-          <img src={items.avatar} alt="test"></img>
           <Box
             key={1}
             display="flex"
@@ -230,7 +234,7 @@ export const AccountSettings = () => {
                 key={3}
                 style={{ justifyContent: "center", display: "flex" }}
                 sx={{ height: 128, width: 128 }}
-                src={items.avatar}
+                src={avatar}
                 alt={items.username}
               />
             </IconButton>

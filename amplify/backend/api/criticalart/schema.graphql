@@ -10,7 +10,7 @@ type Account
   id: ID!
   email: String @index(name: "byEmail", queryField: "accountByEmail")
   cognitoUser: String
-  username: String
+  username: String @index(name: "byUsername", queryField: "accountByUsername")
   firstName: String
   lastName: String
   verified: Boolean
@@ -27,8 +27,9 @@ type image
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam }]
   ) {
   id: ID!
-  Src: String
+  authorName: String @index(name: "byAuthorName", queryField: "imageByAuthor")
+  src: String
   author: Account
-  ShortDesc: String
-  Description: String
+  shortDesc: String
+  description: String
 }
