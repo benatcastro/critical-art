@@ -2,10 +2,10 @@ import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 
 import "./UploadImage.scss";
-
+import CloseIcon from "@mui/icons-material/Close";
 import { ImageConfig } from "./UploadImgConfig";
 import uploadImg from "./Assets/cloud-upload-regular-240.png";
-import { Typography, Paper, Box } from "@mui/material";
+import { Typography, Paper, IconButton, Button } from "@mui/material";
 
 export const UploadImage = (props) => {
   const wrapperRef = useRef(null);
@@ -23,7 +23,6 @@ export const UploadImage = (props) => {
     if (newFile) {
       const updatedList = [...fileList, newFile];
       setFileList(updatedList);
-      props.onFileChange(updatedList);
     }
   };
 
@@ -31,15 +30,11 @@ export const UploadImage = (props) => {
     const updatedList = [...fileList];
     updatedList.splice(fileList.indexOf(file), 1);
     setFileList(updatedList);
-    props.onFileChange(updatedList);
   };
 
   return (
-    <Paper className="drag-drop-container">
-      <div>
-        <Typography variant="h6" textAlign="center">
-          Upload your art
-        </Typography>
+    <Paper elevation={3}>
+      <div className="drag-drop-container">
         <div
           ref={wrapperRef}
           className="drop-file-input"
@@ -49,34 +44,44 @@ export const UploadImage = (props) => {
         >
           <div className="drop-file-input__label">
             <img src={uploadImg} alt="" />
-            <p>Drag & Drop your files here</p>
+            <Typography color="basics.black">
+              Drag & Drop your files here
+            </Typography>
           </div>
           <input type="file" accept="image/**" value="" onChange={onFileDrop} />
         </div>
       </div>
       {fileList.length > 0 ? (
-        <div className="drop-file-preview">
-          <p className="drop-file-preview__title">Ready to upload</p>
-          {fileList.map((item, index) => (
-            <div key={index} className="drop-file-preview__item">
-              <img
-                src={
-                  ImageConfig[item.type.split("/")[1]] || ImageConfig["default"]
-                }
-                alt=""
-              />
-              <div className="drop-file-preview__item__info">
-                <Typography mt={1.5}>{item.name}</Typography>
+        <>
+          <Typography fontWeight={400} textAlign="center">
+            Ready to upload
+          </Typography>
+          <div className="drop-file-preview">
+            {fileList.map((item, index) => (
+              <div key={index} className="drop-file-preview__item">
+                <img
+                  src={
+                    ImageConfig[item.type.split("/")[1]] ||
+                    ImageConfig["default"]
+                  }
+                  alt=""
+                />
+                <div className="drop-file-preview__item__info">
+                  <Typography mt={1.5}>{item.name}</Typography>
+                </div>
+                <IconButton
+                  className="drop-file-preview__item__del"
+                  onClick={() => fileRemove(item)}
+                >
+                  <CloseIcon />
+                </IconButton>
               </div>
-              <span
-                className="drop-file-preview__item__del"
-                onClick={() => fileRemove(item)}
-              >
-                x
-              </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          <div className="upload-btn">
+            <Button>Upload</Button>
+          </div>
+        </>
       ) : null}
     </Paper>
   );

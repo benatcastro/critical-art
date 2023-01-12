@@ -16,14 +16,12 @@
 }
 
 .drag-drop-container {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 400;
-  line-height: 1.5;
   display: flex;
-  align-items: flex-start;
   justify-content: center;
   padding-top: 100px;
 }
+
+
 
 .box {
   padding: 30px;
@@ -70,12 +68,11 @@
 }
 
 .drop-file-preview {
+	display: flex;
+	justify-content: center;
     margin-top: 30px;
 }
 
-.drop-file-preview p {
-    font-weight: 500;
-}
 
 .drop-file-preview__title {
     margin-bottom: 20px;
@@ -102,23 +99,19 @@
 }
 
 .drop-file-preview__item__del {
-    background-color: var(--box-bg);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    right: 10px;
-    top: 50%;
+    left: 5%;
+	top: 50%;
     transform: translateY(-50%);
-    box-shadow: var(--box-shadow);
     cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
-.drop-file-preview__item:hover .drop-file-preview__item__del {
-    opacity: 1;
+.upload-btn {
+	display: flex;
+	justify-content: center;
+	padding-bottom: 2%;
 }
+
