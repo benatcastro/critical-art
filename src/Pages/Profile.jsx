@@ -64,7 +64,7 @@ export const Profile = () => {
         style={{
           position: "absolute",
           left: "50%",
-          top: "180%",
+          top: "220%",
           transform: "translate(-50%, -50%)",
           width: "75%",
           paddingBottom: "2%",

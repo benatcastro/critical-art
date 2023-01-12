@@ -38,6 +38,13 @@ const mainTheme = createTheme({
 		black: "#000000"
 	},
   },
+    typography: {
+    "fontFamily": `"Montserrat", sans-serif`,
+    "fontSize": 14,
+    "fontWeightLight": 300,
+    "fontWeightRegular": 400,
+    "fontWeightMedium": 500
+   }
 });
 
 root.render(
