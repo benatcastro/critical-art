@@ -1,16 +1,44 @@
 import { useState, useRef } from "react";
-import PropTypes from "prop-types";
 
 import "./UploadImage.scss";
 import CloseIcon from "@mui/icons-material/Close";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { ImageConfig } from "./UploadImgConfig";
-import uploadImg from "./Assets/cloud-upload-regular-240.png";
-import { Typography, Paper, IconButton, Button } from "@mui/material";
+import { Typography, Paper, IconButton, Button, Divider } from "@mui/material";
+import { GetCurrentUserByEmail } from "../UserAuth/FetchUserInfo";
+import { API, Storage } from "aws-amplify";
+import { createImage } from "../../graphql/mutations";
 
-export const UploadImage = (props) => {
+const createImgs = async (imageList, setUploading) => {
+  await GetCurrentUserByEmail().then((author) => {
+    imageList.forEach((element) => {
+      putImg(element, author, setUploading);
+    });
+  });
+};
+async function putImg(file, author, setUploading) {
+  try {
+    setUploading(true);
+    const img = await Storage.put(file.name, file, {
+      contentType: "image/png",
+    });
+    const data = {
+      authorName: author.username,
+      src: img,
+    };
+    await API.graphql({ query: createImage, variables: { input: data } });
+    setUploading(false);
+  } catch (error) {
+    setUploading(false);
+    console.log("Error uploading file: ", error);
+  }
+}
+
+export const UploadImage = () => {
   const wrapperRef = useRef(null);
 
   const [fileList, setFileList] = useState([]);
+  const [Uploading, setUploading] = useState(false);
 
   const onDragEnter = () => wrapperRef.current.classList.add("dragover");
 
@@ -34,6 +62,12 @@ export const UploadImage = (props) => {
 
   return (
     <Paper elevation={3}>
+      <div className="header">
+        <Typography fontSize={20} fontWeight={500} mt={5}>
+          Upload your art
+        </Typography>
+        <Divider />
+      </div>
       <div className="drag-drop-container">
         <div
           ref={wrapperRef}
@@ -43,9 +77,9 @@ export const UploadImage = (props) => {
           onDrop={onDrop}
         >
           <div className="drop-file-input__label">
-            <img src={uploadImg} alt="" />
-            <Typography color="basics.black">
-              Drag & Drop your files here
+            <CloudUploadIcon sx={{ fontSize: 150, color: "secondary.main" }} />
+            <Typography fontWeight={600} color="basics.black">
+              Drag & Drop your images here
             </Typography>
           </div>
           <input type="file" accept="image/**" value="" onChange={onFileDrop} />
@@ -59,13 +93,7 @@ export const UploadImage = (props) => {
           <div className="drop-file-preview">
             {fileList.map((item, index) => (
               <div key={index} className="drop-file-preview__item">
-                <img
-                  src={
-                    ImageConfig[item.type.split("/")[1]] ||
-                    ImageConfig["default"]
-                  }
-                  alt=""
-                />
+                <img src={ImageConfig["default"]} alt="" />
                 <div className="drop-file-preview__item__info">
                   <Typography mt={1.5}>{item.name}</Typography>
                 </div>
@@ -79,14 +107,16 @@ export const UploadImage = (props) => {
             ))}
           </div>
           <div className="upload-btn">
-            <Button>Upload</Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => createImgs(fileList, setUploading)}
+            >
+              <Typography color="basics.white">{Uploading ? "Uploading" : "Upload"}</Typography>
+            </Button>
           </div>
         </>
       ) : null}
     </Paper>
   );
-};
-
-UploadImage.propTypes = {
-  onFileChange: UploadImage.func,
 };

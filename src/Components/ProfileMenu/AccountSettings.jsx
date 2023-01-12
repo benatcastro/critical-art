@@ -151,7 +151,6 @@ export const AccountSettings = () => {
               setAvatar(avatarValue);
             }
           );
-          console.log("avatarkey", avatarKey);
         }
         return items;
       });

@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+.header {
+	display: flex;
+	justify-content: center;
+}
 .drag-drop-container {
   display: flex;
   justify-content: center;
@@ -58,8 +62,6 @@
 
 .drop-file-input__label {
     text-align: center;
-    color: var(--txt-second-color);
-    font-weight: 600;
     padding: 10px;
 }
 

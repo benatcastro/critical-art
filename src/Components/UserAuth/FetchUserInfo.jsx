@@ -1,11 +1,8 @@
 import { API, Auth } from "aws-amplify";
 import {
   accountByEmail,
-  accountByName,
   listAccounts,
-  searchAccounts,
 } from "../../graphql/queries";
-import { useState, useEffect } from "react";
 import { deleteAccount } from "../../graphql/mutations";
 
 export const listUsers = async () => {
@@ -21,8 +18,6 @@ export const GetCurrentUserByEmail = async (__email__) => {
   try {
     const user = await Auth.currentAuthenticatedUser();
     const { attributes } = user;
-    const email = user.email;
-    console.log("Email:", attributes.email);
     const userByEmail = await API.graphql({
       query: accountByEmail,
       variables: { email: attributes.email },
