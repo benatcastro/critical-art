@@ -13,7 +13,7 @@ export const Profile = () => {
   const handleScroll = (scrollElement) => {
     if (scrollElement === "account-settings-section") {
       window.scrollTo({
-        top: accountSettingsPage.current.offsetTop,
+        top: accountSettingsPage.current.offsetTop -100,
         behavior: "smooth",
       });
     } else if (scrollElement === "image-settings-section") {
@@ -31,46 +31,42 @@ export const Profile = () => {
   return (
     <>
       {IsAuth() ? null : <p>You need to be logged</p>}
-      <ProfileSidebar handleScroll={handleScroll} />
-      <div
-        ref={accountSettingsPage}
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: "60%",
-          transform: "translate(-50%, -50%)",
-          width: "75%",
-        }}
-      >
-        <AccountSettings />
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: "140%",
-          transform: "translate(-50%, -50%)",
-          width: "75%",
-          paddingBottom: "2%",
-        }}
-      >
-        <PasswordSettings />
-      </div>
-      <div ref={imgSettingsPage}>
-        <ImageSettings />
-      </div>
-      <div
-        ref={uploadImgPage}
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: "220%",
-          transform: "translate(-50%, -50%)",
-          width: "75%",
-          paddingBottom: "2%",
-        }}
-      >
-        <UploadImage />
+      <div>
+        <div style={{position: 'fixed', marginTop: -200}}>
+          <ProfileSidebar handleScroll={handleScroll} />
+        </div>
+        <div
+          ref={accountSettingsPage}
+          style={{
+            width: "50%",
+            margin: "200px auto",
+			paddingBottom: "2%"
+          }}
+        >
+          <AccountSettings />
+        </div>
+        <div
+          style={{
+            width: "50%",
+            margin: "200px auto",
+			paddingBottom: "2%"
+          }}
+        >
+          <PasswordSettings />
+        </div>
+        <div ref={imgSettingsPage}>
+          <ImageSettings />
+        </div>
+        <div
+          ref={uploadImgPage}
+          style={{
+            width: "50%",
+            margin: "200px auto",
+			paddingBottom: "2%"
+          }}
+        >
+          <UploadImage />
+        </div>
       </div>
     </>
   );
