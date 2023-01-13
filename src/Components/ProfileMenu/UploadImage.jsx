@@ -4,13 +4,23 @@ import "./UploadImage.scss";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { ImageConfig } from "./UploadImgConfig";
-import { Typography, Paper, IconButton, Button, Divider } from "@mui/material";
+import {
+  Typography,
+  Paper,
+  IconButton,
+  Button,
+  Divider,
+  CircularProgress,
+} from "@mui/material";
 import { GetCurrentUserByEmail } from "../UserAuth/FetchUserInfo";
-import { API, Storage } from "aws-amplify";
+import { API, Storage, Auth } from "aws-amplify";
 import { createImage } from "../../graphql/mutations";
 
 const createImgs = async (imageList, setUploading) => {
   await GetCurrentUserByEmail().then((author) => {
+    author.map((items) => {
+      author = items.username;
+    });
     imageList.forEach((element) => {
       putImg(element, author, setUploading);
     });
@@ -19,11 +29,13 @@ const createImgs = async (imageList, setUploading) => {
 async function putImg(file, author, setUploading) {
   try {
     setUploading(true);
+    const { attributes } = await Auth.currentAuthenticatedUser();
     const img = await Storage.put(file.name, file, {
-      contentType: "image/png",
+      contentType: "image/**",
     });
     const data = {
-      authorName: author.username,
+      auth: attributes.sub,
+      author: author,
       src: img,
     };
     await API.graphql({ query: createImage, variables: { input: data } });
@@ -66,7 +78,7 @@ export const UploadImage = () => {
         <Typography fontSize={20} fontWeight={500} mt={5}>
           Upload your art
         </Typography>
-        <Divider />
+        <Divider color="basics.black" sx={{ mb: 3 }} style={{ height: 2 }} />
       </div>
       <div className="drag-drop-container">
         <div
@@ -110,9 +122,12 @@ export const UploadImage = () => {
             <Button
               variant="contained"
               color="secondary"
+              endIcon={Uploading ? <CircularProgress /> : null}
               onClick={() => createImgs(fileList, setUploading)}
             >
-              <Typography color="basics.white">{Uploading ? "Uploading" : "Upload"}</Typography>
+              <Typography color="basics.white">
+                {Uploading ? "Uploading" : "Upload"}
+              </Typography>
             </Button>
           </div>
         </>

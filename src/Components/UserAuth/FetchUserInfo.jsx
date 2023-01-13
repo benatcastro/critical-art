@@ -1,8 +1,5 @@
 import { API, Auth } from "aws-amplify";
-import {
-  accountByEmail,
-  listAccounts,
-} from "../../graphql/queries";
+import { accountByEmail, listAccounts } from "../../graphql/queries";
 import { deleteAccount } from "../../graphql/mutations";
 
 export const listUsers = async () => {
@@ -22,7 +19,7 @@ export const GetCurrentUserByEmail = async (__email__) => {
       query: accountByEmail,
       variables: { email: attributes.email },
     });
-	return (userByEmail.data.accountByEmail.items)
+    return userByEmail.data.accountByEmail.items;
   } catch (error) {
     console.log("Error getting user by email:", error);
   }

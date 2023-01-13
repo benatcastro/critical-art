@@ -146,7 +146,7 @@ export const AccountSettings = () => {
       });
       userAvatar.map(async (items) => {
         if (items.avatar) {
-          const avatarKey = await Storage.get(items.avatar).then(
+          await Storage.get(items.avatar).then(
             (avatarValue) => {
               setAvatar(avatarValue);
             }
@@ -312,7 +312,7 @@ export const AccountSettings = () => {
                   error={errors.email ? true : false}
                   helperText={errors.email ? errors.email.message : null}
                   inputProps={{
-                    readOnly: readOnly ? true : false,
+                    readOnly: true,
                   }}
                 ></TextField>
               </Grid>
@@ -404,7 +404,6 @@ export const AccountSettings = () => {
         width="100%"
         alignItems="center"
         justifyContent="center"
-        bgcolor="primary.light"
       >
         <CircularProgress sx={{ color: "secondary.main" }} />
       </Box>

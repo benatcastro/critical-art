@@ -17,47 +17,9 @@ export const createAccount = /* GraphQL */ `
       artistAcc
       avatar
       biography
-      favImg {
-        id
-        authorName
-        src
-        author {
-          id
-          email
-          cognitoUser
-          username
-          firstName
-          lastName
-          verified
-          artistAcc
-          avatar
-          biography
-          createdAt
-          updatedAt
-          accountFavImgId
-        }
-        shortDesc
-        description
-        createdAt
-        updatedAt
-        accountImagesId
-      }
-      images {
-        items {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        nextToken
-      }
+      favImg
       createdAt
       updatedAt
-      accountFavImgId
     }
   }
 `;
@@ -77,47 +39,9 @@ export const updateAccount = /* GraphQL */ `
       artistAcc
       avatar
       biography
-      favImg {
-        id
-        authorName
-        src
-        author {
-          id
-          email
-          cognitoUser
-          username
-          firstName
-          lastName
-          verified
-          artistAcc
-          avatar
-          biography
-          createdAt
-          updatedAt
-          accountFavImgId
-        }
-        shortDesc
-        description
-        createdAt
-        updatedAt
-        accountImagesId
-      }
-      images {
-        items {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        nextToken
-      }
+      favImg
       createdAt
       updatedAt
-      accountFavImgId
     }
   }
 `;
@@ -137,47 +61,9 @@ export const deleteAccount = /* GraphQL */ `
       artistAcc
       avatar
       biography
-      favImg {
-        id
-        authorName
-        src
-        author {
-          id
-          email
-          cognitoUser
-          username
-          firstName
-          lastName
-          verified
-          artistAcc
-          avatar
-          biography
-          createdAt
-          updatedAt
-          accountFavImgId
-        }
-        shortDesc
-        description
-        createdAt
-        updatedAt
-        accountImagesId
-      }
-      images {
-        items {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        nextToken
-      }
+      favImg
       createdAt
       updatedAt
-      accountFavImgId
     }
   }
 `;
@@ -188,41 +74,14 @@ export const createImage = /* GraphQL */ `
   ) {
     createImage(input: $input, condition: $condition) {
       id
-      authorName
+      auth
       src
-      author {
-        id
-        email
-        cognitoUser
-        username
-        firstName
-        lastName
-        verified
-        artistAcc
-        avatar
-        biography
-        favImg {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        images {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        accountFavImgId
-      }
+      author
+      type
       shortDesc
       description
       createdAt
       updatedAt
-      accountImagesId
     }
   }
 `;
@@ -233,41 +92,14 @@ export const updateImage = /* GraphQL */ `
   ) {
     updateImage(input: $input, condition: $condition) {
       id
-      authorName
+      auth
       src
-      author {
-        id
-        email
-        cognitoUser
-        username
-        firstName
-        lastName
-        verified
-        artistAcc
-        avatar
-        biography
-        favImg {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        images {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        accountFavImgId
-      }
+      author
+      type
       shortDesc
       description
       createdAt
       updatedAt
-      accountImagesId
     }
   }
 `;
@@ -278,41 +110,14 @@ export const deleteImage = /* GraphQL */ `
   ) {
     deleteImage(input: $input, condition: $condition) {
       id
-      authorName
+      auth
       src
-      author {
-        id
-        email
-        cognitoUser
-        username
-        firstName
-        lastName
-        verified
-        artistAcc
-        avatar
-        biography
-        favImg {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        images {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        accountFavImgId
-      }
+      author
+      type
       shortDesc
       description
       createdAt
       updatedAt
-      accountImagesId
     }
   }
 `;

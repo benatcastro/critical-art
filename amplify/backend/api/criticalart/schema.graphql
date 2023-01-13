@@ -17,8 +17,7 @@ type Account
   artistAcc: Boolean
   avatar: String
   biography: String
-  favImg: image @hasOne
-  images: [image] @hasMany
+  favImg: String
 }
 
 type image
@@ -27,9 +26,10 @@ type image
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam }]
   ) {
   id: ID!
-  authorName: String @index(name: "byAuthorName", queryField: "imageByAuthor")
+  auth: String @index(name: "byAuth", queryField: "imageByAuth")
   src: String
-  author: Account
+  author: String
+  type: String
   shortDesc: String
   description: String
 }

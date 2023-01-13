@@ -13,7 +13,7 @@ export const Profile = () => {
   const handleScroll = (scrollElement) => {
     if (scrollElement === "account-settings-section") {
       window.scrollTo({
-        top: accountSettingsPage.current.offsetTop -100,
+        top: accountSettingsPage.current.offsetTop - 100,
         behavior: "smooth",
       });
     } else if (scrollElement === "image-settings-section") {
@@ -32,7 +32,7 @@ export const Profile = () => {
     <>
       {IsAuth() ? null : <p>You need to be logged</p>}
       <div>
-        <div style={{position: 'fixed', marginTop: -200}}>
+        <div style={{ position: "fixed", marginTop: -200 }}>
           <ProfileSidebar handleScroll={handleScroll} />
         </div>
         <div
@@ -40,7 +40,7 @@ export const Profile = () => {
           style={{
             width: "50%",
             margin: "200px auto",
-			paddingBottom: "2%"
+            paddingBottom: "2%",
           }}
         >
           <AccountSettings />
@@ -49,12 +49,19 @@ export const Profile = () => {
           style={{
             width: "50%",
             margin: "200px auto",
-			paddingBottom: "2%"
+            paddingBottom: "2%",
           }}
         >
           <PasswordSettings />
         </div>
-        <div ref={imgSettingsPage}>
+        <div
+          ref={imgSettingsPage}
+          style={{
+            width: "50%",
+            margin: "200px auto",
+            paddingBottom: "2%",
+          }}
+        >
           <ImageSettings />
         </div>
         <div
@@ -62,7 +69,7 @@ export const Profile = () => {
           style={{
             width: "50%",
             margin: "200px auto",
-			paddingBottom: "2%"
+            paddingBottom: "2%",
           }}
         >
           <UploadImage />

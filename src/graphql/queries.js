@@ -14,47 +14,9 @@ export const getAccount = /* GraphQL */ `
       artistAcc
       avatar
       biography
-      favImg {
-        id
-        authorName
-        src
-        author {
-          id
-          email
-          cognitoUser
-          username
-          firstName
-          lastName
-          verified
-          artistAcc
-          avatar
-          biography
-          createdAt
-          updatedAt
-          accountFavImgId
-        }
-        shortDesc
-        description
-        createdAt
-        updatedAt
-        accountImagesId
-      }
-      images {
-        items {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        nextToken
-      }
+      favImg
       createdAt
       updatedAt
-      accountFavImgId
     }
   }
 `;
@@ -76,22 +38,9 @@ export const listAccounts = /* GraphQL */ `
         artistAcc
         avatar
         biography
-        favImg {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        images {
-          nextToken
-        }
+        favImg
         createdAt
         updatedAt
-        accountFavImgId
       }
       nextToken
     }
@@ -101,41 +50,14 @@ export const getImage = /* GraphQL */ `
   query GetImage($id: ID!) {
     getImage(id: $id) {
       id
-      authorName
+      auth
       src
-      author {
-        id
-        email
-        cognitoUser
-        username
-        firstName
-        lastName
-        verified
-        artistAcc
-        avatar
-        biography
-        favImg {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        images {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        accountFavImgId
-      }
+      author
+      type
       shortDesc
       description
       createdAt
       updatedAt
-      accountImagesId
     }
   }
 `;
@@ -148,28 +70,14 @@ export const listImages = /* GraphQL */ `
     listImages(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        authorName
+        auth
         src
-        author {
-          id
-          email
-          cognitoUser
-          username
-          firstName
-          lastName
-          verified
-          artistAcc
-          avatar
-          biography
-          createdAt
-          updatedAt
-          accountFavImgId
-        }
+        author
+        type
         shortDesc
         description
         createdAt
         updatedAt
-        accountImagesId
       }
       nextToken
     }
@@ -201,22 +109,9 @@ export const accountByEmail = /* GraphQL */ `
         artistAcc
         avatar
         biography
-        favImg {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        images {
-          nextToken
-        }
+        favImg
         createdAt
         updatedAt
-        accountFavImgId
       }
       nextToken
     }
@@ -248,37 +143,24 @@ export const accountByUsername = /* GraphQL */ `
         artistAcc
         avatar
         biography
-        favImg {
-          id
-          authorName
-          src
-          shortDesc
-          description
-          createdAt
-          updatedAt
-          accountImagesId
-        }
-        images {
-          nextToken
-        }
+        favImg
         createdAt
         updatedAt
-        accountFavImgId
       }
       nextToken
     }
   }
 `;
-export const imageByAuthor = /* GraphQL */ `
-  query ImageByAuthor(
-    $authorName: String!
+export const imageByAuth = /* GraphQL */ `
+  query ImageByAuth(
+    $auth: String!
     $sortDirection: ModelSortDirection
     $filter: ModelimageFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    imageByAuthor(
-      authorName: $authorName
+    imageByAuth(
+      auth: $auth
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -286,28 +168,14 @@ export const imageByAuthor = /* GraphQL */ `
     ) {
       items {
         id
-        authorName
+        auth
         src
-        author {
-          id
-          email
-          cognitoUser
-          username
-          firstName
-          lastName
-          verified
-          artistAcc
-          avatar
-          biography
-          createdAt
-          updatedAt
-          accountFavImgId
-        }
+        author
+        type
         shortDesc
         description
         createdAt
         updatedAt
-        accountImagesId
       }
       nextToken
     }

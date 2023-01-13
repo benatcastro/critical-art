@@ -27,7 +27,7 @@ export const PasswordSettings = () => {
         justifyContent="center"
       >
         <Box>
-          <Typography fontSize={20} fontWeight="500" color="basics.black" mb={1} mt={4}>
+          <Typography fontSize={20} fontWeight="500" color="basics.black" textAlign="center" mb={1} mt={4}>
             Update your password
           </Typography>
 		  <Divider color="basics.black" sx={{mb: 3,}} style={{height: 2}}/>
