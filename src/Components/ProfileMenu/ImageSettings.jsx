@@ -1,11 +1,12 @@
 import { API, Auth, Storage } from "aws-amplify";
 import { useState, useEffect } from "react";
 import { imageByAuth } from "../../graphql/queries";
-import { Paper } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 export const ImageSettings = () => {
   const [Images, setImages] = useState([]);
+  const [editing, setEdit] = useState();
   const [hasLoaded, setHasLoaded] = useState(false);
   useEffect(() => {
     fetchImages();
@@ -31,31 +32,41 @@ export const ImageSettings = () => {
   };
   if (hasLoaded)
     return (
-      console.log("test", Images),
-      (
-        <Paper elevation={3} style={{ paddingBottom: "2%" }}>
-          {Images.map((image, index) => {
-            return (
+      <Paper elevation={3} style={{ paddingBottom: "2%" }}>
+        {Images.map((image, index) => {
+          return (
+            <>
               <Box
-                key={index}
+                key={image.id}
                 width="100%"
                 display="flex"
                 alignContent="center"
                 alignItems="center"
               >
                 <img
+                  key={image.id}
                   src={image.src}
                   alt=""
-                  key={index}
                   style={{
                     width: "75%",
                     margin: "2% auto",
                   }}
                 />
+				<Typography>{editing && editing ? "editing" : null}</Typography>
               </Box>
-            );
-          })}
-        </Paper>
-      )
+              <Box ml="12.5%" key={index}>
+                <Button
+                  key={index}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setEdit(image)}
+                >
+                  <Typography color="basics.white">Edit</Typography>
+                </Button>
+              </Box>
+            </>
+          );
+        })}
+      </Paper>
     );
 };

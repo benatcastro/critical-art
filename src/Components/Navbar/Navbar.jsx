@@ -9,107 +9,147 @@ import {
   Toolbar,
   Drawer,
   Box,
+  Avatar,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import "./Navbar.scss";
 import "./Links";
 import { drawerList, Links } from "./Links";
 import { Link } from "react-router-dom";
 import { LoginPopup } from "./LoginPopup";
-import {signOut} from "../UserAuth/AuthUtils"
+import { signOut } from "../UserAuth/AuthUtils";
+import { GetCurrentUserByEmail } from "../UserAuth/FetchUserInfo";
+import { Storage } from "aws-amplify";
+
+const getNavbarAvatar = async (setAvatar, setHasLoaded) => {
+  var AvatarKey;
+  await GetCurrentUserByEmail().then((userValue) => {
+    userValue.map((items) => {
+      AvatarKey = items.avatar;
+    });
+  });
+  await Storage.get(AvatarKey).then((avatarValue) => {
+    setAvatar(avatarValue);
+  });
+  setHasLoaded(true);
+};
 
 export const Navbar = (props) => {
   const [open, setDrawer] = useState(false);
   const [displayPopup, setDisplay] = useState(false);
+  const [hasLoadead, setHasLoaded] = useState(false);
+  const [avatar, setAvatar] = useState();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const toggleDrawer = () => {
     setDrawer(!open);
   };
-  console.log("Navbar auth:", props.auth);
   const toggleDisplay = () => {
     setDisplay(!displayPopup);
   };
-
-  console.log("Drawer:", open);
-  return (
-    <>
-      <AppBar className="appbar">
-        <Toolbar>
-          <IconButton>
+  getNavbarAvatar(setAvatar, setHasLoaded);
+  if (hasLoadead) {
+    return (
+      <>
+        <AppBar className="appbar">
+          <Toolbar>
+            <IconButton>
               <img src={logo} className="logo" alt="logo"></img>
-          </IconButton>
-          <ul className="nav-menu">
-            {Links.map((item, idx) => {
-              return (
-                <Button variant="contained" key={idx}>
-                  <Link
-                    style={{ textDecoration: "none" }}
-                    className={item.cName}
-                    to={item.url}
-                    key={idx}
-                  >
-                    <li key={idx}>{item.title}</li>
-                  </Link>
-                </Button>
-              );
-            })}
-          </ul>
-          {!props.auth ? (
-            <Button
-              color="secondary"
-              variant="contained"
-              size="large"
-              className="login-btn"
-              onClick={toggleDisplay}
-            >
-              Login
-            </Button>
-          ) : (
-            <Button
-              color="secondary"
-              variant="contained"
-              size="large"
-              className="login-btn"
-              onClick={signOut}
-            >
-              Log out
-            </Button>
-          )}
-          <IconButton
-            color="inherit"
-			size="small"
-            onClick={toggleDrawer}
-            className="drawer-btn"
-          >
-            <MenuIcon sx={{ fontSize: "2.5rem" }} className="drawer-btn" />
-          </IconButton>
-          <Box
-            sx={{
-              width: 250,
-            }}
-            role="presentation"
-            onClick={toggleDrawer}
-            onKeyDown={toggleDrawer}
-          >
-            <Drawer anchor="right" open={open}>
-              <Box className="drawer" color="primary">
-                <IconButton
-                  color="inherit"
-                  onClick={toggleDrawer}
-                  className="close-drawer"
-                >
-                  <CloseIcon
-                    sx={{ fontSize: "2rem" }}
-                    className="close-drawer"
-                  />
+            </IconButton>
+            <ul className="nav-menu">
+              {Links.map((item, idx) => {
+                return (
+                  <Button variant="contained" key={idx}>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      className={item.cName}
+                      to={item.url}
+                      key={idx}
+                    >
+                      <li key={idx}>{item.title}</li>
+                    </Link>
+                  </Button>
+                );
+              })}
+            </ul>
+            {!props.auth ? (
+              <Button
+                color="secondary"
+                variant="contained"
+                size="large"
+                className="login-btn"
+                onClick={toggleDisplay}
+              >
+                Login
+              </Button>
+            ) : (
+              <>
+                <IconButton onClick={handleClick}>
+                  <Avatar src={avatar} alt=""></Avatar>
                 </IconButton>
-              </Box>
-              {drawerList}
-            </Drawer>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {displayPopup ? (
-        <LoginPopup toggleDisplay={toggleDisplay} value={displayPopup} />
-      ) : null}
-    </>
-  );
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={openMenu}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleClose}><Link state={{textDecoration: 'none'}} to={"/profile"}>Profile</Link></MenuItem>
+                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem onClick={handleClose && signOut}>Logout</MenuItem>
+                </Menu>
+              </>
+            )}
+            <IconButton
+              color="inherit"
+              size="small"
+              onClick={toggleDrawer}
+              className="drawer-btn"
+            >
+              <MenuIcon sx={{ fontSize: "2.5rem" }} className="drawer-btn" />
+            </IconButton>
+            <Box
+              sx={{
+                width: 250,
+              }}
+              role="presentation"
+              onClick={toggleDrawer}
+              onKeyDown={toggleDrawer}
+            >
+              <Drawer anchor="right" open={open}>
+                <Box className="drawer" color="primary.main">
+                  <IconButton
+                    color="inherit"
+                    onClick={toggleDrawer}
+                    className="close-drawer"
+                  >
+                    <CloseIcon
+                      sx={{ fontSize: "2rem" }}
+                      className="close-drawer"
+                    />
+                  </IconButton>
+                </Box>
+                {drawerList}
+              </Drawer>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        {displayPopup ? (
+          <LoginPopup toggleDisplay={toggleDisplay} value={displayPopup} />
+        ) : null}
+      </>
+    );
+  }
 };
