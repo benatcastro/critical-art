@@ -19,7 +19,7 @@ export const PasswordSettings = () => {
     updatePassword(data);
   };
   return (
-    <Paper style={{ paddingBottom: "2%" }} elevation={3}>
+    <Paper style={{ padding: "2%" }} elevation={3}>
       <Box
         display="flex"
         width="100%"

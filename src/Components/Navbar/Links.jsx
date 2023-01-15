@@ -44,32 +44,32 @@ export const Links = [
 
 export const drawerList = (
   <List className="drawer-list">
-    <Link to={"/"}>
+    <Link to={"/"} style={{ textDecoration: 'none', color: 'black' }}>
       <ListItemButton>
         <ListItemText primary="Home" />
       </ListItemButton>
     </Link>
-    <Link to={"/about"}>
+    <Link to="/about" style={{ textDecoration: 'none', color: 'black' }}>
       <ListItemButton>
         <ListItemText primary="About" />
       </ListItemButton>
     </Link>
-    <Link to={"/artists"}>
+    <Link to="/artists" style={{ textDecoration: 'none', color: 'black' }}>
       <ListItemButton>
         <ListItemText primary="Our Artists" />
       </ListItemButton>
     </Link>
-    <Link to={"/donate"}>
+    <Link to="/donate" style={{ textDecoration: 'none', color: 'black' }}>
       <ListItemButton>
         <ListItemText primary="Help Us" />
       </ListItemButton>
     </Link>
-    <Link to={"/contact"}>
+    <Link to={"/contact"} style={{ textDecoration: 'none', color: 'black' }}>
       <ListItemButton>
         <ListItemText primary="Contact Us" />
       </ListItemButton>
     </Link>
-    <Link to={"/Profile"}>
+    <Link to={"/Profile"} style={{ textDecoration: 'none', color: 'black' }}>
       <ListItemButton>
         <ListItemText primary="Profile" />
       </ListItemButton>

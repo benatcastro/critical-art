@@ -76,6 +76,7 @@ export const createImage = /* GraphQL */ `
       id
       auth
       src
+      isFav
       author
       type
       shortDesc
@@ -94,6 +95,7 @@ export const updateImage = /* GraphQL */ `
       id
       auth
       src
+      isFav
       author
       type
       shortDesc
@@ -112,6 +114,7 @@ export const deleteImage = /* GraphQL */ `
       id
       auth
       src
+      isFav
       author
       type
       shortDesc

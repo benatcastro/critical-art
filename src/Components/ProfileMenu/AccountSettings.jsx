@@ -97,6 +97,8 @@ export const AccountSettings = () => {
   const [openAvatar, setOpenAvatar] = useState(false);
   const [avatarMenu, setAvatarMenu] = useState("upload-avatar");
   const [avatar, setAvatar] = useState();
+  const [mappedData, setMappedData] = useState();
+  const [userDataLoaded, setUserDataLoaded] = useState(false);
   const anchorRef = React.useRef();
   React.useEffect(() => {
     setTimeout(() => setAnchorElCancel(anchorRef?.current), 1);
@@ -146,11 +148,9 @@ export const AccountSettings = () => {
       });
       userAvatar.map(async (items) => {
         if (items.avatar) {
-          await Storage.get(items.avatar).then(
-            (avatarValue) => {
-              setAvatar(avatarValue);
-            }
-          );
+          await Storage.get(items.avatar).then((avatarValue) => {
+            setAvatar(avatarValue);
+          });
         }
         return items;
       });
@@ -179,223 +179,216 @@ export const AccountSettings = () => {
     resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data) => {
-    console.log("Updating", data);
     saveDataChanges(data);
   };
-  if (!loadingUserData) {
-    return userData.map((items) => {
-      const resetFields = () => {
-        setWrite(!readOnly);
-        setConfirmChanges(!confirmChanges);
-        setValue("firstname", items.firstName);
-        setValue("lastname", items.lastName);
-        setValue("email", items.email);
-        setValue("username", items.username);
-        setValue("bio", items.biography);
-      };
-      return (
-        <Paper style={{ paddingBottom: "2%" }} elevation={3}>
-          <Box
-            key={1}
-            display="flex"
-            width="100%"
-            alignItems="center"
-            justifyContent="center"
+  useEffect(() => {
+    if (!loadingUserData) {
+      userData.map((items) => {
+        setMappedData(items);
+      });
+      setUserDataLoaded(true);
+    }
+  });
+
+  if (userDataLoaded) {
+    const resetFields = () => {
+      setWrite(!readOnly);
+      setConfirmChanges(!confirmChanges);
+      setValue("firstname", mappedData.firstName);
+      setValue("lastname", mappedData.lastName);
+      setValue("email", mappedData.email);
+      setValue("username", mappedData.username);
+      setValue("bio", mappedData.biography);
+    };
+    return (
+      <Paper style={{ paddingBottom: "2%" }} elevation={3}>
+        <Box
+          display="flex"
+          width="100%"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Popover
+            id="aria-describedby"
+            open={openAvatar}
+            anchorEl={anchorElAvatar}
+            onClose={handleCloseAvatar}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
           >
-            <Popover
-			key={20}
-              id="aria-describedby"
-              open={openAvatar}
-              anchorEl={anchorElAvatar}
-              onClose={handleCloseAvatar}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-            >
-              <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
-                {avatarMenu === "upload-avatar" ? (
-                  <Button
-                    size="small"
-                    onClick={() => setAvatarMenu("change-avatar")}
-                  >
-                    <Typography>Change avatar</Typography>
-                  </Button>
-                ) : (
-                  <ChangeAvatar />
-                )}
-              </Box>
-            </Popover>
-            <IconButton key={2} id="aria-describedby" onClick={handleAvatar}>
-              <Avatar
-                key={3}
-                style={{ justifyContent: "center", display: "flex" }}
-                sx={{ height: 128, width: 128 }}
-                src={avatar}
-                alt={items.username}
-              />
-            </IconButton>
-          </Box>
-          <Box textAlign="center" mt={2} mb={2}>
-            <Typography
-              key={15}
-              fontSize={20}
-              fontWeight="500"
-              color="basics.black"
-            >
-              Update your account settings
-            </Typography>
-          </Box>
-          <Box ml="5%" mr="5%" key={4}>
-            <Grid
-              key={5}
-              container
-              justifyContent="center"
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-              rowSpacing={2}
-            >
-              <Grid item xs={6} key={6}>
-                <Typography color="basics.black">First Name</Typography>
-                <TextField
-                  id="firstname"
-                  name="firstname"
-                  fullWidth
-                  defaultValue={items.firstName}
-                  {...register("firstname")}
-                  error={errors.lastname ? true : false}
-                  helperText={
-                    errors.firstname ? errors.firstname.message : null
-                  }
-                  inputProps={{
-                    readOnly: readOnly ? true : false,
-                  }}
-                ></TextField>
-              </Grid>
-              <Grid item xs={6} key={7}>
-                <Typography color="basics.black">Last Name</Typography>
-                <TextField
-                  id="lastname"
-                  name="lastname"
-                  fullWidth
-                  defaultValue={items.lastName}
-                  {...register("lastname")}
-                  error={errors.lastname ? true : false}
-                  helperText={errors.lastName ? errors.lastName.message : null}
-                  inputProps={{
-                    readOnly: readOnly ? true : false,
-                  }}
-                ></TextField>
-              </Grid>
-              <Grid item xs={6} key={8}>
-                <Typography color="basics.black">Username</Typography>
-                <TextField
-                  id="username"
-                  name="username"
-                  fullWidth
-                  defaultValue={items.username}
-                  {...register("username")}
-                  error={errors.username ? true : false}
-                  helperText={errors.username ? errors.username.message : null}
-                  inputProps={{
-                    readOnly: readOnly ? true : false,
-                  }}
-                ></TextField>
-              </Grid>
-              <Grid item xs={6} key={9}>
-                <Typography color="basics.black">Email</Typography>
-                <TextField
-                  id="email"
-                  name="email"
-                  fullWidth
-                  defaultValue={items.email}
-                  {...register("email")}
-                  error={errors.email ? true : false}
-                  helperText={errors.email ? errors.email.message : null}
-                  inputProps={{
-                    readOnly: true,
-                  }}
-                ></TextField>
-              </Grid>
-              <Grid container ml={3} key={10}>
-                <Typography mt={1} color="basics.black">
-                  Biography
-                </Typography>
-                <TextField
-                  multiline
-                  rows={4}
-                  id="bio"
-                  name="bio"
-                  fullWidth
-                  defaultValue={items.biography}
-                  margin="normal"
-                  {...register("bio")}
-                  error={errors.bio ? true : false}
-                  helperText={errors.bio ? errors.bio.message : null}
-                  inputProps={{
-                    readOnly: readOnly ? true : false,
-                  }}
-                />
-              </Grid>
+            <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
+              {avatarMenu === "upload-avatar" ? (
+                <Button
+                  size="small"
+                  onClick={() => setAvatarMenu("change-avatar")}
+                >
+                  <Typography>Change avatar</Typography>
+                </Button>
+              ) : (
+                <ChangeAvatar />
+              )}
+            </Box>
+          </Popover>
+          <IconButton id="aria-describedby" onClick={handleAvatar}>
+            <Avatar
+              style={{ justifyContent: "center", display: "flex" }}
+              sx={{ height: 128, width: 128 }}
+              src={avatar}
+              alt={mappedData.username}
+            />
+          </IconButton>
+        </Box>
+        <Box textAlign="center" mt={2} mb={2}>
+          <Typography fontSize={20} fontWeight="500" color="basics.black">
+            Update your account settings
+          </Typography>
+        </Box>
+        <Box ml="5%" mr="5%">
+          <Grid
+            container
+            justifyContent="center"
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            rowSpacing={2}
+          >
+            <Grid item xs={6}>
+              <Typography color="basics.black">First Name</Typography>
+              <TextField
+                id="firstname"
+                name="firstname"
+                fullWidth
+                defaultValue={mappedData.firstName}
+                {...register("firstname")}
+                error={errors.lastname ? true : false}
+                helperText={errors.firstname ? errors.firstname.message : null}
+                inputProps={{
+                  readOnly: readOnly ? true : false,
+                }}
+              ></TextField>
             </Grid>
-            <Button
-              key={11}
-              color="secondary"
-              variant="contained"
-              onClick={
-                readOnly ? () => setWrite(!readOnly) : handleSubmit(onSubmit)
-              }
-            >
-              <Typography key={12} color="basics.whte">
-                {readOnly ? "Edit" : "Save"}
+            <Grid item xs={6}>
+              <Typography color="basics.black">Last Name</Typography>
+              <TextField
+                id="lastname"
+                name="lastname"
+                fullWidth
+                defaultValue={mappedData.lastName}
+                {...register("lastname")}
+                error={errors.lastname ? true : false}
+                helperText={errors.lastName ? errors.lastName.message : null}
+                inputProps={{
+                  readOnly: readOnly ? true : false,
+                }}
+              ></TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography color="basics.black">Username</Typography>
+              <TextField
+                id="username"
+                name="username"
+                fullWidth
+                defaultValue={mappedData.username}
+                {...register("username")}
+                error={errors.username ? true : false}
+                helperText={errors.username ? errors.username.message : null}
+                inputProps={{
+                  readOnly: readOnly ? true : false,
+                }}
+              ></TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography color="basics.black">Email</Typography>
+              <TextField
+                id="email"
+                name="email"
+                fullWidth
+                defaultValue={mappedData.email}
+                {...register("email")}
+                error={errors.email ? true : false}
+                helperText={errors.email ? errors.email.message : null}
+                inputProps={{
+                  readOnly: true,
+                }}
+              ></TextField>
+            </Grid>
+            <Grid container ml={3} >
+              <Typography  mt={1} color="basics.black">
+                Biography
               </Typography>
-            </Button>
-            <Popover
-              key={13}
-              id="aria-describedby"
-              open={confirmChanges}
-              anchorEl={anchorElCancel}
-              onClose={handleCancelClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-            >
-              <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
-                <Box>
-                  <Typography key={14} color="">
-                    Cancel changes?
-                  </Typography>
-                </Box>
-                <Grid>
-                  <Button key={15} onClick={resetFields}>
-                    <Typography key={16} color="">
-                      Yes
-                    </Typography>
-                  </Button>
-                  <Button
-                    key={17}
-                    onClick={() => setConfirmChanges(!confirmChanges)}
-                  >
-                    <Typography color="">No</Typography>
-                  </Button>
-                </Grid>
+              <TextField
+                multiline
+                rows={4}
+                id="bio"
+                name="bio"
+                fullWidth
+                defaultValue={mappedData.biography}
+                margin="normal"
+                {...register("bio")}
+                error={errors.bio ? true : false}
+                helperText={errors.bio ? errors.bio.message : null}
+                inputProps={{
+                  readOnly: readOnly ? true : false,
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={
+              readOnly ? () => setWrite(!readOnly) : handleSubmit(onSubmit)
+            }
+          >
+            <Typography color="basics.whte">
+              {readOnly ? "Edit" : "Save"}
+            </Typography>
+          </Button>
+          <Popover
+            id="aria-describedby"
+            open={confirmChanges}
+            anchorEl={anchorElCancel}
+            onClose={handleCancelClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <Box sx={{ p: 1, bgcolor: "basics.white" }} boxShadow={1}>
+              <Box >
+                <Typography  color="">
+                  Cancel changes?
+                </Typography>
               </Box>
-            </Popover>
-            {!readOnly ? (
-              <Button
-                key={18}
-                id="aria-describedby"
-                type="button"
-                onClick={handleCancel}
-                variant="contained"
-              >
-                Cancel
-              </Button>
-            ) : null}
-          </Box>
-        </Paper>
-      );
-    });
+              <Grid >
+                <Button  onClick={resetFields}>
+                  <Typography >
+                    Yes
+                  </Typography>
+                </Button>
+                <Button
+                  onClick={() => setConfirmChanges(!confirmChanges)}
+                >
+                  <Typography>
+                    No
+                  </Typography>
+                </Button>
+              </Grid>
+            </Box>
+          </Popover>
+          {!readOnly ? (
+            <Button
+              id="aria-describedby"
+              type="button"
+              onClick={handleCancel}
+              variant="contained"
+            >
+              Cancel
+            </Button>
+          ) : null}
+        </Box>
+      </Paper>
+    );
   } else {
     return (
       <Box

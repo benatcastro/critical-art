@@ -28,6 +28,7 @@ type image
   id: ID!
   auth: String @index(name: "byAuth", queryField: "imageByAuth")
   src: String
+  isFav: Boolean
   author: String
   type: String
   shortDesc: String

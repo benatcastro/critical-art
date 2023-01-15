@@ -73,7 +73,7 @@ export const UploadImage = () => {
   };
 
   return (
-    <Paper elevation={3}>
+    <Paper style={{padding: "2%"}} elevation={3}>
       <div className="header">
         <Typography fontSize={20} fontWeight={500} mt={5}>
           Upload your art

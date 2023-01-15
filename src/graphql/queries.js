@@ -52,6 +52,7 @@ export const getImage = /* GraphQL */ `
       id
       auth
       src
+      isFav
       author
       type
       shortDesc
@@ -72,6 +73,7 @@ export const listImages = /* GraphQL */ `
         id
         auth
         src
+        isFav
         author
         type
         shortDesc
@@ -170,6 +172,7 @@ export const imageByAuth = /* GraphQL */ `
         id
         auth
         src
+        isFav
         author
         type
         shortDesc

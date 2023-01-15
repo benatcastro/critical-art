@@ -21,6 +21,7 @@ import { LoginPopup } from "./LoginPopup";
 import { signOut } from "../UserAuth/AuthUtils";
 import { GetCurrentUserByEmail } from "../UserAuth/FetchUserInfo";
 import { Storage } from "aws-amplify";
+import { IsAuth } from "../UserAuth/IsAuth";
 
 const getNavbarAvatar = async (setAvatar, setHasLoaded) => {
   var AvatarKey;
@@ -57,99 +58,101 @@ export const Navbar = (props) => {
   const toggleDisplay = () => {
     setDisplay(!displayPopup);
   };
-  getNavbarAvatar(setAvatar, setHasLoaded);
-  if (hasLoadead) {
-    return (
-      <>
-        <AppBar className="appbar">
-          <Toolbar>
-            <IconButton>
-              <img src={logo} className="logo" alt="logo"></img>
-            </IconButton>
-            <ul className="nav-menu">
-              {Links.map((item, idx) => {
-                return (
-                  <Button variant="contained" key={idx}>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      className={item.cName}
-                      to={item.url}
-                      key={idx}
-                    >
-                      <li key={idx}>{item.title}</li>
-                    </Link>
-                  </Button>
-                );
-              })}
-            </ul>
-            {!props.auth ? (
-              <Button
-                color="secondary"
-                variant="contained"
-                size="large"
-                className="login-btn"
-                onClick={toggleDisplay}
-              >
-                Login
-              </Button>
-            ) : (
-              <>
-                <IconButton onClick={handleClick}>
-                  <Avatar src={avatar} alt=""></Avatar>
-                </IconButton>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={openMenu}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                >
-                  <MenuItem onClick={handleClose}><Link state={{textDecoration: 'none'}} to={"/profile"}>Profile</Link></MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                  <MenuItem onClick={handleClose && signOut}>Logout</MenuItem>
-                </Menu>
-              </>
-            )}
-            <IconButton
-              color="inherit"
-              size="small"
-              onClick={toggleDrawer}
-              className="drawer-btn"
-            >
-              <MenuIcon sx={{ fontSize: "2.5rem" }} className="drawer-btn" />
-            </IconButton>
-            <Box
-              sx={{
-                width: 250,
-              }}
-              role="presentation"
-              onClick={toggleDrawer}
-              onKeyDown={toggleDrawer}
-            >
-              <Drawer anchor="right" open={open}>
-                <Box className="drawer" color="primary.main">
-                  <IconButton
-                    color="inherit"
-                    onClick={toggleDrawer}
-                    className="close-drawer"
+  if (props.auth)
+  	getNavbarAvatar(setAvatar, setHasLoaded);
+  return (
+    <>
+      <AppBar className="appbar">
+        <Toolbar>
+          <IconButton>
+            <img src={logo} className="logo" alt="logo"></img>
+          </IconButton>
+          <ul className="nav-menu">
+            {Links.map((item, idx) => {
+              return (
+                <Button variant="contained" key={idx} className={item.cName}>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    className={item.cName}
+                    to={item.url}
+                    key={idx}
                   >
-                    <CloseIcon
-                      sx={{ fontSize: "2rem" }}
-                      className="close-drawer"
-                    />
-                  </IconButton>
-                </Box>
-                {drawerList}
-              </Drawer>
-            </Box>
-          </Toolbar>
-        </AppBar>
-        {displayPopup ? (
-          <LoginPopup toggleDisplay={toggleDisplay} value={displayPopup} />
-        ) : null}
-      </>
-    );
-  }
+                    <li key={idx}>{item.title}</li>
+                  </Link>
+                </Button>
+              );
+            })}
+          </ul>
+          {!props.auth ? (
+            <Button
+              color="secondary"
+              variant="contained"
+              size="large"
+              className="login-btn"
+              onClick={toggleDisplay}
+            >
+              Login
+            </Button>
+          ) : (
+            <>
+              <IconButton onClick={handleClick}>
+                <Avatar src={avatar} alt=""></Avatar>
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={openMenu}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem onClick={handleClose}>
+                  <Link style={{ textDecoration: 'none', color: 'black' }} to={"/profile"}>
+                    Manage account
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose && signOut}>Logout</MenuItem>
+              </Menu>
+            </>
+          )}
+          <IconButton
+            color="inherit"
+            size="small"
+            onClick={toggleDrawer}
+            className="drawer-btn"
+          >
+            <MenuIcon sx={{ fontSize: "2.5rem" }} className="drawer-btn" />
+          </IconButton>
+          <Box
+            sx={{
+              width: 250,
+            }}
+            role="presentation"
+            onClick={toggleDrawer}
+            onKeyDown={toggleDrawer}
+          >
+            <Drawer anchor="right" open={open}>
+              <Box className="drawer" color="primary.main">
+                <IconButton
+                  color="inherit"
+                  onClick={toggleDrawer}
+                  className="close-drawer"
+                >
+                  <CloseIcon
+                    sx={{ fontSize: "2rem" }}
+                    className="close-drawer"
+                  />
+                </IconButton>
+              </Box>
+              {drawerList}
+            </Drawer>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      {displayPopup ? (
+        <LoginPopup toggleDisplay={toggleDisplay} value={displayPopup} />
+      ) : null}
+    </>
+  );
 };

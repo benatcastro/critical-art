@@ -3,6 +3,9 @@
   width: 8rem;
   padding-top: 25vh;
   position: fixed;
+  @media only screen and (max-width: 600px) {
+    width: 3rem;
+  }
 }
 
 .account-icon {
@@ -42,6 +45,14 @@
     border-bottom-right-radius: 10px;
     transition: all 0.3s ease;
   }
+  @media only screen and (max-width: 600px) {
+    width: 3rem;
+    .account-icon {
+      width: 3rem;
+      height: 3rem;
+      left: -5px;
+    }
+  }
 }
 .image-settings {
   margin-top: 1rem;
@@ -59,6 +70,14 @@
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     transition: all 0.3s ease;
+  }
+  @media only screen and (max-width: 600px) {
+    width: 3rem;
+    .image-icon {
+      width: 3rem;
+      height: 3rem;
+      left: -5px;
+    }
   }
 }
 
@@ -79,5 +98,13 @@
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     transition: all 0.3s ease;
+  }
+  @media only screen and (max-width: 600px) {
+    width: 3rem;
+    .upload-icon {
+      width: 3rem;
+      height: 3rem;
+      left: -5px;
+    }
   }
 }
