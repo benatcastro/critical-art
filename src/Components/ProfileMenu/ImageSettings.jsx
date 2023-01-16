@@ -3,14 +3,13 @@ import { useState, useEffect } from "react";
 import { imageByAuth } from "../../graphql/queries";
 import {
   Button,
-  Grid,
   Paper,
   TextField,
   Typography,
   FormControlLabel,
   Checkbox,
+  Box,
 } from "@mui/material";
-import { Box, Popover } from "@mui/material";
 import { updateImage } from "../../graphql/mutations";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -28,12 +27,28 @@ const setFavourite = async (id) => {
   }
 };
 
-const saveChanges = (data, id) => {};
+const saveChanges = async (data, id) => {
+  try {
+    if (data.isFav) {
+      setFavourite(id);
+    }
+    const inputData = {
+      id: id,
+      type: data.type,
+      shortDesc: data.shortDesc,
+      description: data.description,
+    };
+    await API.graphql({ query: updateImage, variables: { input: inputData } });
+  } catch (error) {
+    console.log("Error updating img:", error);
+  }
+};
 
 export const ImageSettings = () => {
   const [Images, setImages] = useState([]);
   const [Editing, setEditing] = useState(true);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [id, setId] = useState();
 
   useEffect(() => {
     fetchImages();
@@ -70,8 +85,9 @@ export const ImageSettings = () => {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = (data, id) => {
-    console.log(data, id);
+  const onSubmit = (data) => {
+    console.log("data:", data, id);
+    saveChanges(data, id);
   };
   if (hasLoaded)
     return (
@@ -134,12 +150,14 @@ export const ImageSettings = () => {
                   style={{ display: "flex" }}
                   control={<Checkbox />}
                   label="Favourite image"
+                  {...register("isFav")}
                 />
               </Box>
               <Button
                 sx={{ ml: "12.5%" }}
                 variant="contained"
                 color="secondary"
+                onMouseOver={() => setId(image.id)}
                 onClick={handleSubmit(onSubmit)}
               >
                 <Typography color="basics.white">

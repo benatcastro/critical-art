@@ -1,13 +1,10 @@
-import React from 'react'
+import React from "react";
+import { HomePageMain } from "../Components/HomePage/Main";
 
 export const Home = () => {
   return (
-	<div>
-		<h1>Home</h1>
-		<h1>Home</h1>
-		<h1>Home</h1>
-		<h1>Home</h1>
-	</div>
-  )
-}
-
+    <div>
+      <HomePageMain />
+    </div>
+  );
+};
