@@ -1,23 +1,64 @@
 .footer-container {
-	display: flex;
+  display: flex;
 }
 
 .footer-logo {
-	margin-top: 1rem;
-	margin-left: 2rem;
-	width: 40%;
+  display: flex;
+  margin-left: 1rem;
+  width: 35%;
+  height: 150px;
 }
 
 .logo {
-	width: 10rem;
-	height: auto;
+  width: 10rem;
+  height: auto;
 }
 
-.footer-content {
-	display: grid;
-	width: 100%;
-	height: 100%;
-	grid-template-columns: repeat(2, 2px);
+.link {
+  text-decoration: none;
+  margin-top: 10px;
 }
 
+.text {
+  &:hover {
+    color: #2196f3;
+    transition: all 0.5s ease;
+  }
+}
 
+.twitter {
+  &:hover {
+    color: #1da1f2;
+    transition: all 0.5s ease;
+  }
+}
+.instagram {
+  &:hover {
+    color: #e1306c;
+    transition: all 0.5s ease;
+  }
+}
+
+.icon {
+  position: absolute;
+  margin-top: -3px;
+  margin-left: 5px;
+}
+
+.column {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.media {
+  display: flex;
+}
+.divider {
+  margin-left: 10rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 2px;
+  height: 100px;
+  background-color: white;
+}

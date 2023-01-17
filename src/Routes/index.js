@@ -7,6 +7,7 @@ import { NotFound } from "../Pages/NotFound";
 import { Artists } from "../Pages/Artists";
 import { Contact } from "../Pages/Contact";
 import { Profile } from "../Pages/Profile";
+import { ImageSlider } from "../Components/HomePage/ImageSlider";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/home",
+        element: <ImageSlider />,
       },
       {
         path: "/about",

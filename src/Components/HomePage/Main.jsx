@@ -15,6 +15,7 @@ import {
   FadeIn,
   MoveIn,
 } from "react-scroll-motion";
+import { useNavigate } from "react-router-dom";
 
 const getFavImg = async (setLoaded, setImgList) => {
   const imageData = await API.graphql({ query: listImages });
@@ -54,27 +55,8 @@ export const HomePageMain = (sliderRef) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const [scrollY, setScrollY] = useState(0);
+  const navigate = useNavigate();
 
-  function logit() {
-    setScrollY(window.pageYOffset);
-    if (scrollY > 950) {
-      setIsFixed(false);
-    } else {
-      setIsFixed(true);
-    }
-    console.log(scrollY);
-  }
-
-  useEffect(() => {
-    function watchScroll() {
-      window.addEventListener("scroll", logit);
-    }
-    watchScroll();
-    return () => {
-      window.removeEventListener("scroll", logit);
-    };
-  });
   if (ImageLoaded) {
     return (
       <Box height="100%">
@@ -110,9 +92,9 @@ export const HomePageMain = (sliderRef) => {
             </div>
           </ScrollPage>
           <ScrollPage>
-            <div style={{height: '100vh'}}>
+            <div style={{ height: "100vh" }}>
               <div className="content">
-                <svg id="more-arrows">
+                <svg id="more-arrows" onClick={() => navigate('/home')}>
                   <polygon
                     class="arrow-top"
                     points="37.6,27.9 1.8,1.3 3.3,0 37.6,25.3 71.9,0 73.7,1.3 "
