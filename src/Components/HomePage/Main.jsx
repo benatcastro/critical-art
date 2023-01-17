@@ -1,10 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { API, Storage } from "aws-amplify";
 import { listImages } from "../../graphql/queries";
 import { CircularProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import "./HomePageStyles.scss";
+import "./arrow.scss";
 import logo_glitch from "../../Logos/logo_glitch.svg";
+import {
+  Animator,
+  ScrollContainer,
+  ScrollPage,
+  batch,
+  Fade,
+  FadeIn,
+  MoveIn,
+} from "react-scroll-motion";
 
 const getFavImg = async (setLoaded, setImgList) => {
   const imageData = await API.graphql({ query: listImages });
@@ -14,11 +24,12 @@ const getFavImg = async (setLoaded, setImgList) => {
   setLoaded(true);
 };
 
-export const HomePageMain = () => {
+export const HomePageMain = (sliderRef) => {
   const [imgList, setImgList] = useState();
   const [img, setImg] = useState();
   const [Loaded, setLoaded] = useState(false);
   const [ImageLoaded, setImageLoaded] = useState(false);
+  const [isFixed, setIsFixed] = useState(true);
   useEffect(() => {
     getFavImg(setLoaded, setImgList);
   }, []);
@@ -42,15 +53,83 @@ export const HomePageMain = () => {
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  const [scrollY, setScrollY] = useState(0);
+
+  function logit() {
+    setScrollY(window.pageYOffset);
+    if (scrollY > 950) {
+      setIsFixed(false);
+    } else {
+      setIsFixed(true);
+    }
+    console.log(scrollY);
+  }
+
+  useEffect(() => {
+    function watchScroll() {
+      window.addEventListener("scroll", logit);
+    }
+    watchScroll();
+    return () => {
+      window.removeEventListener("scroll", logit);
+    };
+  });
   if (ImageLoaded) {
     return (
-      <Box>
-        <img src={img} alt="" className="main-img" />;
-        <div className="home-container">
-          <div className="home-logo">
-            <img src={logo_glitch} className="home-logo"></img>
-          </div>
-        </div>
+      <Box height="100%">
+        <img src={img} className="main-img" style={{}} />
+        <ScrollContainer>
+          <ScrollPage page={0}>
+            <Animator animation={batch(Fade())}>
+              <div className="home-container">
+                <img src={logo_glitch} className="home-logo"></img>
+              </div>
+            </Animator>
+          </ScrollPage>
+          <ScrollPage page={1}>
+            <div className="home-text">
+              <Typography
+                mt={5}
+                fontSize={100}
+                fontWeight={600}
+                color="basics.white"
+                variant="h6"
+              >
+                <Animator animation={batch(FadeIn())}>WE ARE</Animator>
+                <Animator animation={batch(FadeIn(), MoveIn(-1000, 0))}>
+                  ARTISTS
+                </Animator>
+                <Animator animation={batch(FadeIn(), MoveIn(1000, 0))}>
+                  PAINTERS
+                </Animator>
+                <Animator animation={batch(FadeIn(), MoveIn(-1000, 0))}>
+                  CREATORS
+                </Animator>
+              </Typography>
+            </div>
+          </ScrollPage>
+          <ScrollPage>
+            <div style={{height: '100vh'}}>
+              <div className="content">
+                <svg id="more-arrows">
+                  <polygon
+                    class="arrow-top"
+                    points="37.6,27.9 1.8,1.3 3.3,0 37.6,25.3 71.9,0 73.7,1.3 "
+                  />
+                  <polygon
+                    class="arrow-middle"
+                    points="37.6,45.8 0.8,18.7 4.4,16.4 37.6,41.2 71.2,16.4 74.5,18.7 "
+                  />
+                  <polygon
+                    class="arrow-bottom"
+                    points="37.6,64 0,36.1 5.1,32.8 37.6,56.8 70.4,32.8 75.5,36.1 "
+                  />
+                </svg>
+              </div>
+            </div>
+          </ScrollPage>
+        </ScrollContainer>
       </Box>
     );
   } else {

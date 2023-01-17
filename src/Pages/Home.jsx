@@ -1,10 +1,12 @@
-import React from "react";
+import { useRef } from "react";
+import { ImageSlider } from "../Components/HomePage/ImageSlider";
 import { HomePageMain } from "../Components/HomePage/Main";
 
 export const Home = () => {
+  const slider = useRef(null);
   return (
-    <div>
-      <HomePageMain />
-    </div>
+	  <>
+        <HomePageMain />
+    </>
   );
 };

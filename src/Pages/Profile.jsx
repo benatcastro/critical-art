@@ -18,12 +18,12 @@ export const Profile = () => {
       });
     } else if (scrollElement === "image-settings-section") {
       window.scrollTo({
-        top: imgSettingsPage.current.offsetTop,
+        top: imgSettingsPage.current.offsetTop -100,
         behavior: "smooth",
       });
     } else if (scrollElement === "upload-image-section") {
       window.scrollTo({
-        top: uploadImgPage.current.offsetTop,
+        top: uploadImgPage.current.offsetTop -100,
         behavior: "smooth",
       });
     }

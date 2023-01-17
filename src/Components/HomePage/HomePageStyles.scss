@@ -1,7 +1,8 @@
 .main-img {
   width: 100vw;
   height: 100vh;
-  filter: brightness(20%);
+  filter: brightness(35%);
+  position: fixed;
 }
 
 .home-container {
@@ -26,5 +27,17 @@
 }
 
 .home-text {
+  height: 80%;
+  text-align: center;
+  margin-top: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 200px;
+  text-shadow: -2px -2px 0 #00ffff, 2px 2px 0 #ff0000;
+}
 
+.arrow {
+	position: absolute;
+	margin-top: 200px;
 }
