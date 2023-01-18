@@ -8,8 +8,18 @@ import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 //ROUTER
-import { router } from "./Routes";
-import { RouterProvider } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Footer } from "./Components/Footer/Footer";
+import { Navbar } from "./Components/Navbar/Navbar";
+import { AboutUs } from "./Pages/AboutUs";
+import { Home } from "./Pages/Home";
+import { Donate } from "./Pages/Donate";
+import { NotFound } from "./Pages/NotFound";
+import { Artists } from "./Pages/Artists";
+import { Contact } from "./Pages/Contact";
+import { Profile } from "./Pages/Profile";
+import { ImageSlider } from "./Components/HomePage/ImageSlider";
+import { IsAuth } from "./Components/UserAuth/IsAuth";
 
 //AWS
 import { Amplify } from "aws-amplify";
@@ -49,7 +59,7 @@ const mainTheme = createTheme({
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={mainTheme}>
-      <RouterProvider router={router} />
+		<App />
     </ThemeProvider>
   </React.StrictMode>
 );

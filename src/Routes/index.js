@@ -9,6 +9,8 @@ import { Contact } from "../Pages/Contact";
 import { Profile } from "../Pages/Profile";
 import { ImageSlider } from "../Components/HomePage/ImageSlider";
 
+
+
 export const router = createBrowserRouter([
   {
     path: "/",
