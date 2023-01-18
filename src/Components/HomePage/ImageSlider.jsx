@@ -1,12 +1,9 @@
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
 
-export const ImageSlider = () => {
+export const ImageSlider = (selectedImg) => {
   return (
-    <div className="intro">
-		<Typography align="center" variant="h6" fontSize={50}>Critical Art</Typography>
-		<Typography align="center" variant="h6" fontSize={50}>Critical Art</Typography>
-		<Typography align="center" variant="h6" fontSize={50}>Critical Art</Typography>
-    </div>
+    <Box className="intro">
+    </Box>
   );
 };

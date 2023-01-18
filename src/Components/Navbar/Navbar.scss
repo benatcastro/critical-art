@@ -24,11 +24,16 @@
   justify-content: end;
   margin-right: 2rem;
   transition: all 1s ease;
+  filter: blur();
 }
 
 .nav-links {
   color: white;
   text-decoration: none;
+  &:hover {
+	color:#2196f3;
+	transition: all 0.3s ease;
+  }
 }
 
 .drawer-btn {
@@ -49,12 +54,14 @@
 	}
 	.drawer-btn {
 		display: flex;
-		align-items: right;
 	}
 	.drawer-list {
 		text-decoration: none;
 	}
 	.close-drawer {
 		display: flex;
+	}
+	.avatar {
+		display: none;
 	}
 }

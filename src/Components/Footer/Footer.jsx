@@ -9,7 +9,7 @@ import {
   Button,
   Icon,
 } from "@mui/material";
-import { Container } from "@mui/system";
+import { Container, display } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../Logos/logo_black.svg";
@@ -19,10 +19,13 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import PestControlOutlinedIcon from "@mui/icons-material/PestControlOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
-import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
-import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
+import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
+import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
+import { useLocation } from "react-router-dom";
 
 export const Footer = () => {
+  const location = useLocation();
+  const path = location.pathname
   return (
     <Box
       width="100vw"
@@ -31,6 +34,7 @@ export const Footer = () => {
       }}
       className="footer-container"
       component="div"
+	  style={{display: location.pathname === '/' ? 'none' : null}}
     >
       <div className="footer-logo">
         <img className="logo" src={logo} alt="logo" />
@@ -91,7 +95,11 @@ export const Footer = () => {
           </Typography>
         </Link>
         <Link className="link" to={"/"}>
-          <Typography fontWeight={600} color="basics.white" className="instagram">
+          <Typography
+            fontWeight={600}
+            color="basics.white"
+            className="instagram"
+          >
             <Icon>
               <InstagramIcon />
             </Icon>

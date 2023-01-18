@@ -12,6 +12,7 @@ import {
   Avatar,
   Menu,
   MenuItem,
+  Typography,
 } from "@mui/material";
 import "./Navbar.scss";
 import "./Links";
@@ -21,7 +22,7 @@ import { LoginPopup } from "./LoginPopup";
 import { signOut } from "../UserAuth/AuthUtils";
 import { GetCurrentUserByEmail } from "../UserAuth/FetchUserInfo";
 import { Storage } from "aws-amplify";
-import { IsAuth } from "../UserAuth/IsAuth";
+import { useLocation } from "react-router-dom";
 
 const getNavbarAvatar = async (setAvatar, setHasLoaded) => {
   var AvatarKey;
@@ -44,6 +45,8 @@ export const Navbar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
 
+  const location = useLocation()
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -62,7 +65,7 @@ export const Navbar = (props) => {
   	getNavbarAvatar(setAvatar, setHasLoaded);
   return (
     <>
-      <AppBar className="appbar">
+      <AppBar color="transparent" sx={{mb: 200, filter: 'blur(50%)'}}>
         <Toolbar>
           <IconButton>
             <img src={logo} className="logo" alt="logo"></img>
@@ -70,14 +73,14 @@ export const Navbar = (props) => {
           <ul className="nav-menu">
             {Links.map((item, idx) => {
               return (
-                <Button variant="contained" key={idx} className={item.cName}>
+                <Button variant="text" key={idx} className={item.cName}>
                   <Link
                     style={{ textDecoration: "none" }}
                     className={item.cName}
                     to={item.url}
                     key={idx}
                   >
-                    <li key={idx}>{item.title}</li>
+                    <li key={idx}><Typography color={location.pathname === '/' ? null : 'basics.black'} fontWeight={500}>{item.title}</Typography></li>
                   </Link>
                 </Button>
               );
@@ -96,7 +99,7 @@ export const Navbar = (props) => {
           ) : (
             <>
               <IconButton onClick={handleClick}>
-                <Avatar src={avatar} alt=""></Avatar>
+                <Avatar src={avatar} alt="" className="avatar"></Avatar>
               </IconButton>
               <Menu
                 id="basic-menu"
@@ -120,7 +123,6 @@ export const Navbar = (props) => {
             color="inherit"
             size="small"
             onClick={toggleDrawer}
-            className="drawer-btn"
           >
             <MenuIcon sx={{ fontSize: "2.5rem" }} className="drawer-btn" />
           </IconButton>

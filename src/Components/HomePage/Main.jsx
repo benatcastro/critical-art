@@ -16,6 +16,7 @@ import {
   MoveIn,
 } from "react-scroll-motion";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const getFavImg = async (setLoaded, setImgList) => {
   const imageData = await API.graphql({ query: listImages });
@@ -58,7 +59,9 @@ export const HomePageMain = (sliderRef) => {
 
   if (ImageLoaded) {
     return (
-      <Box height="100%">
+      <motion.div
+        style={{ height: "100%" }}
+      >
         <img src={img} className="main-img" style={{}} />
         <ScrollContainer>
           <ScrollPage page={0}>
@@ -93,7 +96,7 @@ export const HomePageMain = (sliderRef) => {
           <ScrollPage>
             <div style={{ height: "100vh" }}>
               <div className="content">
-                <svg id="more-arrows" onClick={() => navigate('/home')}>
+                <svg id="more-arrows" onClick={() => navigate("/home")}>
                   <polygon
                     className="arrow-top"
                     points="37.6,27.9 1.8,1.3 3.3,0 37.6,25.3 71.9,0 73.7,1.3 "
@@ -111,7 +114,7 @@ export const HomePageMain = (sliderRef) => {
             </div>
           </ScrollPage>
         </ScrollContainer>
-      </Box>
+      </motion.div>
     );
   } else {
     return (
