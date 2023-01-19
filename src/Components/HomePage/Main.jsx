@@ -16,7 +16,7 @@ import {
   MoveIn,
 } from "react-scroll-motion";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useIsPresent } from "framer-motion";
 
 const getFavImg = async (setLoaded, setImgList) => {
   const imageData = await API.graphql({ query: listImages });
@@ -51,17 +51,32 @@ export const HomePageMain = (sliderRef) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setImageLoaded(true);
-    }, 1000);
+    }, 250);
     return () => clearTimeout(timer);
   }, []);
 
-  const navigate = useNavigate();
+const [scrollY, setScrollY] = useState(0);
 
+  function logit() {
+    setScrollY(window.pageYOffset);
+	if (scrollY > 1300)
+		navigate('/home')
+  }
+
+  useEffect(() => {
+    function watchScroll() {
+      window.addEventListener("scroll", logit);
+    }
+    watchScroll();
+    return () => {
+      window.removeEventListener("scroll", logit);
+    };
+  });
+  const navigate = useNavigate();
+  const isPresent = useIsPresent();
   if (ImageLoaded) {
     return (
-      <motion.div
-        style={{ height: "100%" }}
-      >
+      <div style={{ height: "100%" }}>
         <img src={img} className="main-img" style={{}} />
         <ScrollContainer>
           <ScrollPage page={0}>
@@ -93,28 +108,40 @@ export const HomePageMain = (sliderRef) => {
               </Typography>
             </div>
           </ScrollPage>
-          <ScrollPage>
-            <div style={{ height: "100vh" }}>
-              <div className="content">
-                <svg id="more-arrows" onClick={() => navigate("/home")}>
-                  <polygon
-                    className="arrow-top"
-                    points="37.6,27.9 1.8,1.3 3.3,0 37.6,25.3 71.9,0 73.7,1.3 "
-                  />
-                  <polygon
-                    className="arrow-middle"
-                    points="37.6,45.8 0.8,18.7 4.4,16.4 37.6,41.2 71.2,16.4 74.5,18.7 "
-                  />
-                  <polygon
-                    className="arrow-bottom"
-                    points="37.6,64 0,36.1 5.1,32.8 37.6,56.8 70.4,32.8 75.5,36.1 "
-                  />
-                </svg>
+          <div style={{ height: 200 }}>
+            <ScrollPage>
+              <div>
+                <div className="content">
+                  <svg id="more-arrows" onClick={() => navigate("/home")}>
+                    <polygon
+                      className="arrow-top"
+                      points="37.6,27.9 1.8,1.3 3.3,0 37.6,25.3 71.9,0 73.7,1.3 "
+                    />
+                    <polygon
+                      className="arrow-middle"
+                      points="37.6,45.8 0.8,18.7 4.4,16.4 37.6,41.2 71.2,16.4 74.5,18.7 "
+                    />
+                    <polygon
+                      className="arrow-bottom"
+                      points="37.6,64 0,36.1 5.1,32.8 37.6,56.8 70.4,32.8 75.5,36.1 "
+                    />
+                  </svg>
+                </div>
               </div>
-            </div>
-          </ScrollPage>
+            </ScrollPage>
+          </div>
         </ScrollContainer>
-      </motion.div>
+        <motion.div
+          initial={{ scaleY: 0 }}
+          animate={{
+            scaleY: 0,
+            transition: { duration: 0.5, ease: "circOut" },
+          }}
+          exit={{ scaleY: 1, transition: { duration: 0.5, ease: "circIn" } }}
+          style={{ originY: isPresent ? 0 : 1 }}
+          className="privacy-screen"
+        />
+      </div>
     );
   } else {
     return (

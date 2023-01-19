@@ -9,19 +9,38 @@ import {
   FormControlLabel,
   Checkbox,
   Box,
+  Popover,
 } from "@mui/material";
 import { updateImage } from "../../graphql/mutations";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+
+const unsetFavourite = async (id) => {
+  await API.graphql({
+    query: updateImage,
+    variables: { input: { id: id, isFav: false } },
+  });
+};
 
 const setFavourite = async (id) => {
   try {
+    const { attributes } = await Auth.currentAuthenticatedUser();
+    const imageData = await API.graphql({
+      query: imageByAuth,
+      variables: { auth: attributes.sub },
+    });
+    const imageList = imageData.data.imageByAuth.items;
+    const favImgs = imageList.filter((image) => image.isFav === true);
+    favImgs.forEach((element) => {
+      unsetFavourite(element.id);
+    });
     await API.graphql({
       query: updateImage,
       variables: { input: { id: id, isFav: true } },
     });
+    console.log(imageList);
   } catch (error) {
     console.log("Error updating fav img:", error);
   }
@@ -29,9 +48,7 @@ const setFavourite = async (id) => {
 
 const saveChanges = async (data, id) => {
   try {
-    if (data.isFav) {
-      setFavourite(id);
-    }
+    if (data.favourite) setFavourite(id);
     const inputData = {
       id: id,
       type: data.type,
@@ -46,9 +63,17 @@ const saveChanges = async (data, id) => {
 
 export const ImageSettings = () => {
   const [Images, setImages] = useState([]);
-  const [Editing, setEditing] = useState(true);
+  const [Editing, setEditing] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [id, setId] = useState();
+  const [Id, setId] = useState();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   useEffect(() => {
     fetchImages();
@@ -76,18 +101,23 @@ export const ImageSettings = () => {
     type: Yup.string().required("Type is required"),
     shortDesc: Yup.string().required("Short description is required"),
     description: Yup.string().required("Description is required"),
+    favourite: Yup.boolean().nullable(),
   });
   const {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      favourite: false,
+    },
   });
   const onSubmit = (data) => {
-    console.log("data:", data, id);
-    saveChanges(data, id);
+    console.log("data:", data, "id", Id);
+    saveChanges(data, Id);
   };
   if (hasLoaded)
     return (
@@ -102,10 +132,8 @@ export const ImageSettings = () => {
                 alignItems="center"
               >
                 <img
-                  className={image.id}
-                  key={image.id}
                   src={image.src}
-                  alt=""
+                  alt="test"
                   style={{
                     width: "75%",
                     margin: "2% auto",
@@ -117,9 +145,11 @@ export const ImageSettings = () => {
                 <TextField
                   id="type"
                   name="type"
+                  defaultValue={image.type}
                   fullWidth
                   {...register("type")}
-                  defaultValue={image.type}
+                  error={errors.type ? true : false}
+                  helperText={errors.type ? errors.type.message : null}
                   inputProps={{
                     readOnly: !Editing ? true : false,
                   }}
@@ -128,9 +158,13 @@ export const ImageSettings = () => {
                 <TextField
                   id="shortDesc"
                   name="shortDesc"
+                  defaultValue={image.shortDesc}
                   fullWidth
                   {...register("shortDesc")}
-                  defaultValue={image.shortDesc}
+                  error={errors.shortDesc ? true : false}
+                  helperText={
+                    errors.shortDesc ? errors.shortDesc.message : null
+                  }
                   inputProps={{
                     readOnly: !Editing ? true : false,
                   }}
@@ -139,31 +173,74 @@ export const ImageSettings = () => {
                 <TextField
                   id="description"
                   name="description"
+                  defaultValue={image.description}
                   fullWidth
                   {...register("description")}
-                  defaultValue={image.description}
+                  error={errors.description ? true : false}
+                  helperText={
+                    errors.description ? errors.description.message : null
+                  }
                   inputProps={{
                     readOnly: !Editing ? true : false,
                   }}
                 />
                 <FormControlLabel
-                  style={{ display: "flex" }}
-                  control={<Checkbox />}
-                  label="Favourite image"
-                  {...register("isFav")}
+                  control={
+                    <Controller
+                      name="favourite"
+                      control={control}
+                      render={({ field: props }) => (
+                        <Checkbox {...props} checked={props.value} />
+                      )}
+                    />
+                  }
+                  label="Set as favourite"
                 />
+                <p>{image.id}</p>
+                <p>{image.type}</p>
+                <p>{image.shortDesc}</p>
+                <p>{image.description}</p>
               </Box>
               <Button
+                aria-describedby={id}
                 sx={{ ml: "12.5%" }}
                 variant="contained"
                 color="secondary"
-                onMouseOver={() => setId(image.id)}
-                onClick={handleSubmit(onSubmit)}
+                onClick={
+                  !Editing
+                    ? () => setEditing(!Editing)
+                    : (event) => {
+                        setAnchorEl(event.currentTarget);
+                        setId(image.id);
+                      }
+                }
               >
                 <Typography color="basics.white">
                   {Editing ? "Save changes" : "Edit"}
                 </Typography>
               </Button>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+              >
+                <Box padding={2}>
+                  <Typography textAlign="center">Confirm changes</Typography>
+                  <Box display="flex">
+                    <Button variant="text" onClick={handleSubmit(onSubmit)}>
+                      Yes
+                    </Button>
+                    <Button variant="text" onClick={handleClose}>
+                      No
+                    </Button>
+                  </Box>
+                </Box>
+              </Popover>
             </Box>
           );
         })}

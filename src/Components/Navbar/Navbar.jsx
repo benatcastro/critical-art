@@ -43,9 +43,10 @@ export const Navbar = (props) => {
   const [hasLoadead, setHasLoaded] = useState(false);
   const [avatar, setAvatar] = useState();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [Id, setId] = useState();
   const openMenu = Boolean(anchorEl);
 
-  const location = useLocation()
+  const location = useLocation();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -61,11 +62,19 @@ export const Navbar = (props) => {
   const toggleDisplay = () => {
     setDisplay(!displayPopup);
   };
-  if (props.auth)
-  	getNavbarAvatar(setAvatar, setHasLoaded);
+  if (props.auth) getNavbarAvatar(setAvatar, setHasLoaded);
   return (
     <>
-      <AppBar color="transparent" sx={{mb: 200, filter: 'blur(50%)'}}>
+      <AppBar
+        color={
+          location.pathname === "/"
+            ? "transparent"
+            : location.pathname === "/home"
+            ? "transparent"
+            : "primary"
+        }
+        sx={{ mb: 200, filter: "blur(50%)" }}
+      >
         <Toolbar>
           <IconButton>
             <img src={logo} className="logo" alt="logo"></img>
@@ -80,7 +89,20 @@ export const Navbar = (props) => {
                     to={item.url}
                     key={idx}
                   >
-                    <li key={idx}><Typography color={location.pathname === '/' ? null : 'basics.black'} fontWeight={500}>{item.title}</Typography></li>
+                    <li key={idx}>
+                      <Typography
+                        color={
+                          location.pathname === "/"
+                            ? null
+                            : location.pathname === "/home"
+                            ? null
+                            : "inherit"
+                        }
+                        fontWeight={500}
+                      >
+                        {item.title}
+                      </Typography>
+                    </li>
                   </Link>
                 </Button>
               );
@@ -111,7 +133,10 @@ export const Navbar = (props) => {
                 }}
               >
                 <MenuItem onClick={handleClose}>
-                  <Link style={{ textDecoration: 'none', color: 'black' }} to={"/profile"}>
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to={"/profile"}
+                  >
                     Manage account
                   </Link>
                 </MenuItem>
@@ -119,11 +144,7 @@ export const Navbar = (props) => {
               </Menu>
             </>
           )}
-          <IconButton
-            color="inherit"
-            size="small"
-            onClick={toggleDrawer}
-          >
+          <IconButton color="inherit" size="small" onClick={toggleDrawer}>
             <MenuIcon sx={{ fontSize: "2.5rem" }} className="drawer-btn" />
           </IconButton>
           <Box
